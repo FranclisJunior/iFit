@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+        <h:outputStylesheet library="css" name="estilo.css" />
+        <link rel="shortcut icon" type="image/x-icon"
+              href="#{resource['imagens:favicon.ico']}" />
+        <title>iFit - Login</title>
+    </h:head>
+    <h:body>
+        <p:growl id="messages" showDetail="false" autoUpdate="true" />
+        <p:ajaxStatus onstart="statusDialog.show();"
+                      onsuccess="statusDialog.hide();" />
+        <p:dialog modal="true" widgetVar="statusDialog" draggable="false"
+                  closable="false" id="ajaxStatusDialog" resizable="false">
+            <p:graphicImage library="imagens" name="ajaxloader.gif" />
+        </p:dialog>
+        <p:panel styleClass="panelLogin">
+            <center>
+                <h:form id="login" prependId="false">
+                    <h:panelGrid>
+                        <br/>
+                        <p:spacer />
+                        <p:outputLabel value="CPF" />
+                        <p:inputMask required="true" id="j_username" value="#{loginBean.login}" mask="999.999.999-99" styleClass="width250"
+                                     requiredMessage="E-mail obrigatório" placeholder="Login" />
+                        <p:outputLabel value="Senha" />
+                        <p:password required="true" id="j_password" value="#{loginBean.senha}" styleClass="width250"
+                                    requiredMessage="Senha obrigatória" placeholder="Senha" />
+                        <br/>
+                        <br/>
+                    </h:panelGrid>
+                    <p:outputPanel id="panelBotao">
+                        <p:commandButton value="Entrar" icon="ui-icon-locked" ajax="false"
+                                         styleClass="ui-priority-primary" action="#{loginBean.login}" update="panelBotao" />
+                    </p:outputPanel>
+                </h:form>
+                <p:spacer height="10" />
+                <br />
+            </center>
+        </p:panel>
+    </h:body>
+</html>

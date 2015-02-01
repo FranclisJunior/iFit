@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/interno.xhtml">
+            <ui:define name="header">
+                <p:outputLabel value="Cadastrar usuário" />
+            </ui:define>
+            <ui:define name="conteudo">
+                <p:panel>
+                    <p:outputPanel id="cadastroUsuarioPanel">
+                        <h:form id="formCadastro">
+                            <p:tabView id="tabView">
+                                <p:tab id="tab1" title="Informações Básicas">
+                                    <p:panel header="#{msgs.informacoes_basicas}">
+                                        <h:panelGrid columns="2">
+                                            <p:outputLabel for="inputNome" value="Nome" />
+                                            <p:inputText id="inputNome"
+                                                         value="#{usuarioBean.usuario.nome}"
+                                                         styleClass="width300" required="true"
+                                                         requiredMessage="#{erros.nome_obrigatorio}" />
+                                            <p:outputLabel for="inputNome" value="E-mail" />
+                                            <p:inputText id="inputEmail"
+                                                         value="#{usuarioBean.usuario.email}"
+                                                         styleClass="width300" required="true"
+                                                         requiredMessage="#{erros.nome_obrigatorio}" />    
+                                            <p:outputLabel for="inputSenha" value="Senha" />                                                                                                          
+					                        <p:password required="true" id="inputSenha" value="#{usuarioBean.usuario.senha}" styleClass="width300"
+					                                    requiredMessage="Senha obrigatória" placeholder="Senha" /> 
+					                		<p:outputLabel for="selectTipo" value="Tipo de usuário" />
+                                            <p:selectOneRadio id="selectTipo" required="true" value="#{usuarioBean.usuario.tipo}">
+                                                <f:selectItem itemLabel="Administrador" itemValue="Administrador" />
+                                               	<f:selectItem itemLabel="Aluno" itemValue="Aluno" />
+                                            </p:selectOneRadio>                                                                        
+                                        </h:panelGrid>
+                                        <h:panelGrid>
+                                            <p:outputLabel for="selectSexo" value="Sexo" />
+                                            <p:selectOneRadio id="selectSexo" required="true" value="#{usuarioBean.usuario.sexo}">
+                                                <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+                                               	<f:selectItem itemLabel="Feminino" itemValue="Feminino" />
+                                            </p:selectOneRadio>
+                                            <p:outputLabel for="selectEstadoCivil" value="Estado Civil" />
+                                            <p:selectOneRadio id="selectEstadoCivil" required="true"
+                                                              value="#{usuarioBean.usuario.estadoCivil}">
+                                                <f:selectItem itemLabel="Solteiro" itemValue="Solteiro" />
+                                                <f:selectItem itemLabel="Casado" itemValue="Casado" />
+                                                <f:selectItem itemLabel="Divorciado" itemValue="Divorciado" />        
+                                            </p:selectOneRadio>
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2">
+                                            <p:outputLabel for="inputCpf" value="CPF" />
+                                            <p:outputLabel for="inputDataNascimento"
+                                                           value="Data de nascimento" />
+                                            <p:inputMask id="inputCpf"
+                                                         value="#{usuarioBean.usuario.cpf}" mask="999.999.999-99"
+                                                         required="true" requiredMessage="#{erros.cpf_obrigatorio}" />
+                                            <p:calendar id="inputDataNascimento" navigator="true"
+                                                        mask="true" pattern="dd/MM/yyyy"
+                                                        value="#{usuarioBean.usuario.dataNascimento}"
+                                                        showOn="button" />
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2">
+                                            <p:outputLabel for="inputRg" value="RG" />
+                                            <p:outputLabel for="inputOrgaoEmissor"
+                                                           value="Orgão Emissor" />
+                                            <p:inputText id="inputRg"
+                                                         value="#{usuarioBean.usuario.rg}" required="true"
+                                                         requiredMessage="#{erros.rg_obrigatorio}" />
+                                            <p:inputText id="inputOrgaoEmissor" required="true"
+                                                         requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+                                                         value="#{usuarioBean.usuario.orgaoEmissor}" />
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:tab>
+                                <p:tab id="tab2" title="Endereço">
+                                    <p:panel header="Endereço">
+                                        <p:outputPanel id="enderecoPanel">
+                                            <h:panelGrid>
+                                                <p:outputLabel for="inputCep" value="CEP" />
+                                                <p:inputMask id="inputCep" required="true"
+                                                             requiredMessage="#{erros.cep_obrigatorio}"
+                                                             value="#{usuarioBean.usuario.endereco.cep}"
+                                                             mask="99999-999">
+                                                </p:inputMask>
+                                            </h:panelGrid>
+                                            <h:panelGrid columns="2">
+                                                <p:outputLabel for="inputLogradouro"
+                                                               value="Logradouro" />
+                                                <p:outputLabel for="inputNumero" value="#{msgs.numero}" />
+                                                <p:inputText id="inputLogradouro" required="true"
+                                                             requiredMessage="#{erros.logradouro_obrigatorio}"
+                                                             value="#{usuarioBean.usuario.endereco.rua}"
+                                                             styleClass="width300" />
+                                                <p:inputText id="inputNumero"
+                                                             value="#{usuarioBean.usuario.endereco.numero}"
+                                                             styleClass="width100" />
+                                            </h:panelGrid>
+                                            <h:panelGrid columns="2">
+                                                <p:outputLabel for="inputComplemento"
+                                                               value="Complemento" />
+                                                <p:outputLabel for="inputBairro" value="#{msgs.bairro}" />
+                                                <p:inputText id="inputComplemento"
+                                                             value="#{usuarioBean.usuario.endereco.complemento}"
+                                                             styleClass="width200" />
+                                                <p:inputText id="inputBairro" required="true"
+                                                             requiredMessage="#{erros.bairro_obrigatorio}"
+                                                             value="#{usuarioBean.usuario.endereco.bairro}"
+                                                             styleClass="width200" />
+                                            </h:panelGrid>
+                                            <h:panelGrid columns="2">
+                                                <p:outputLabel value="Estado" />
+                                                <p:outputLabel value="Cidade" />
+                                                <p:inputText id="inputEstado"
+                                                             value="#{usuarioBean.usuario.endereco.estado}"
+                                                             styleClass="width200" />
+                                                <p:inputText id="inputCidade" required="true"
+                                                             requiredMessage="#{erros.bairro_obrigatorio}"
+                                                             value="#{usuarioBean.usuario.endereco.cidade}"
+                                                             styleClass="width200" />
+                                            </h:panelGrid>
+                                        </p:outputPanel>
+                                    </p:panel>
+                                </p:tab>
+                                <p:tab id="tab5" title="Financeiro">
+                                    <p:panel header="#{msgs.financeiro}">
+                                        <h:panelGrid columns="3">
+                                            <p:outputLabel value="Dia do pagamento" for="campoDia" />          
+                                            <p:inputText id="campoDia"
+                                                         value="#{usuarioBean.usuario.diaPagamento}" required="true"
+                                                         requiredMessage="#{erros.rg_obrigatorio}" />
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:tab>
+                            </p:tabView>
+                            <p:spacer />
+                            <h:panelGrid columns="3">
+                                <p:commandButton id="saveId" actionListener="#{usuarioBean.cadastrar(actionEvent)}" ajax="false"
+                                                 value="#{msgs.salvar}" icon="ui-icon-check"
+                                                 styleClass="ui-priority-primary" />
+                                <p:commandButton actionListener="#{usuarioBean.iniciar}"
+                                                 process="@this" update=":cadastroUsuarioPanel"
+                                                 value="#{msgs.limpar}" icon="ui-icon-document" immediate="true" />
+                                <p:commandButton
+                                    action="#{clienteBean.paginaListarClientes}" ajax="false"
+                                    value="#{msgs.cancelar}" icon="ui-icon-cancel" immediate="true" />
+                            </h:panelGrid>
+                            <p:defaultCommand target="saveId"/>
+                        </h:form>
+                    </p:outputPanel>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

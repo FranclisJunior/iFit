@@ -1,24 +1,50 @@
 package br.com.ifit.model;
 
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+
+@Entity
 public class Medicao {
 	
+	@Id
+	@GeneratedValue
 	private int id;
-	private String cpfAluno;
-	private String data;
-	
+	@JoinColumn(name="USUARIO", referencedColumnName="cpf")
+	private String usuario;
+	@Column
+	private Date data;
+	@Column
 	private float altura;
+	@Column
 	private float peso;
+	@Column
 	private float torax;
+	@Column
 	private float cintura;
+	@Column
 	private float abdomen;
+	@Column
 	private float quadril;
+	@Column
 	private float anteBracoDir;
+	@Column
 	private float anteBracoEsq;
+	@Column
 	private float bicepsDir;
+	@Column
 	private float bicepsEsq;
+	@Column
 	private float panturrilhaDir;
+	@Column
 	private float panturrilhaEsq;
+	@Column
 	private float coxaDir;
+	@Column
 	private float coxaEsq;
 	
 	
@@ -28,16 +54,16 @@ public class Medicao {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getCpfAluno() {
-		return cpfAluno;
+	public String getUsuario() {
+		return usuario;
 	}
-	public void setCpfAluno(String cpfAluno) {
-		this.cpfAluno = cpfAluno;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
-	public void setData(String data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 	public float getAltura() {

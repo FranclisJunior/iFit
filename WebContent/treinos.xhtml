@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    
+    </h:head>
+    
+    <h:body>
+    <ui:composition template="/WEB-INF/interno.xhtml">
+            <ui:define name="header">
+                <p:outputLabel value="Gerenciar treinos" />
+            </ui:define>
+            <ui:define name="conteudo">
+				<p:panel styleClass="conteudo">
+                    <h:form id="formBusca">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel for="busca" value="#{msgs.busca}" />
+                            <p:spacer />
+                            <p:inputText id="busca" maxlength="255" value="#{usuarioBean.busca}"
+                                         styleClass="width300" />
+                            <p:commandButton id="botao" value="#{msgs.buscar}" styleClass="ui-priority-primary"
+                                             actionListener="#{usuarioBean.iniciar}"
+                                             icon="ui-icon-search" update=":panelTabela" />
+                        </h:panelGrid>
+                        <p:separator />
+                    </h:form>
+                    <p:spacer />
+                   <p:outputPanel id="panelTabela">
+                        <center>
+                            <p:dataTable id="tabela" value="#{usuarioBean.usuarios}"
+                                         var="usuario" paginatorAlwaysVisible="false"
+                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+  										 rows="20">
+                                 <p:column>
+                                    <f:facet name="header">Nome</f:facet>
+                                    <p:commandLink oncomplete="PF('treinosDialog').show()"
+                                                   update=":formLocalDialog:panelLocalDialog"
+                                                   value="#{usuario.nome}"                               
+                                                   actionListener="#{usuarioBean.atualizar(usuario.cpf)}" action="#{treinoBean.setCpf(usuario.cpf)}" process="@this">
+                              				<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+									</p:commandLink>                                       
+                                </p:column>                                       
+                                <p:column>
+                                    <f:facet name="header">Quantidade de treinos</f:facet>
+                                    <p:outputLabel value="#{treinoBean.contar(usuario)}" emptyMessage="Não há nenhum treino" />
+                                </p:column>
+                            </p:dataTable>
+                        </center>
+                    </p:outputPanel>
+                </p:panel>
+                <p:dialog widgetVar="treinosDialog" resizable="false">
+                    <p:ajax event="close" listener="#{treinoBean.iniciar}" />
+                    <f:facet name="header">Treinos do usuário</f:facet>
+                    <h:form id="formLocalDialog">
+                        <p:outputPanel id="panelLocalDialog">  
+                        <center>
+                             <p:dataTable id="tabela" style="width:550px;" value="#{treinoBean.treinos}"
+                                         var="treino" paginatorAlwaysVisible="false"
+                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+  										 rows="20">
+                                 <p:column>
+                                    <f:facet name="header">Nome</f:facet>   
+                                    <p:commandLink oncomplete="PF('usuarioTreinoDialog').show()"
+                                                   update=":formLocalDialogTreino:panelLocalDialogTreino"
+                                                   value="#{treino.nome}"                        
+                                                   actionListener="#{treinoBean.atualizar(treino.id)}" process="@this">
+                              				<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+									</p:commandLink>                                                                                      
+                                </p:column> 
+                                 <p:column>
+                                    <f:facet name="header">Data</f:facet>  
+                                    <p:outputLabel value="#{treino.data}" />
+                                                                 
+                                </p:column>                                                                   
+                            </p:dataTable>  
+                            </center>        
+                            <hr />                  
+                            <p:commandButton value="#{msgs.adicionar}" rendered="#{usuarioBean.usuario.cpf != null}"
+                                             onclick="PF('usuarioTreinoDialog').show()" actionListener="#{treinoBean.iniciar}"
+                                             icon="ui-icon-plusthick" update=":panelTabela :formLocalDialogTreino:panelLocalDialogTreino" styleClass="ui-priority-primary" />
+                            <p:commandButton value="#{msgs.cancelar}" immediate="true" action="#{treinoBean.iniciar}"
+                                             oncomplete="PF('treinosDialog').hide()" icon="ui-icon-cancel" />
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>   
+                
+                <p:dialog widgetVar="usuarioTreinoDialog" modal="true" resizable="false">
+                    <p:ajax event="close" listener="#{treinoBean.iniciar}" />                
+                    <f:facet name="header">Editar treino</f:facet>
+                    <h:form id="formLocalDialogTreino">                    
+                        <p:outputPanel id="panelLocalDialogTreino">
+							<h:panelGrid columns="2">
+   	    	       				<p:outputLabel value="Nome do treino" />
+ 	                  			<p:inputText id="inputNomeTreino" value="#{treinoBean.treino.nome}" styleClass="width200" />   
+   	    	       				<p:outputLabel value="Exercícios" /> 	                  			             
+							</h:panelGrid>
+                            <p:tabView id="tabView">
+                                <p:tab id="tab1" title="Segunda">                        
+		                             <p:dataTable id="tabelaSegunda" style="width:550px;" value="#{treinoBean.arraySegunda}"
+		                                         var="exercicioPorUsuario" paginatorAlwaysVisible="false"
+		                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+		  										 rows="20">
+		                                 <p:column>
+		                                    <f:facet name="header">Nome</f:facet>   
+		                                    <p:commandLink oncomplete="PF('exercicioDialog').show()"
+		                                                   value="#{exercicioPorUsuario.nome}" immediate="true"
+		                                                   update=":formLocalDialogExercicio:panelLocalDialogExercicio"                              
+		                                                   actionListener="#{treinoBean.atualizarExercicioPorId(exercicioPorUsuario)}" process="@this">
+                              							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>
+										</p:column> 
+		                                 <p:column>
+		                                    <f:facet name="header">Séries</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.series}" />                    
+		                                </p:column>    
+		                                 <p:column>
+		                                    <f:facet name="header">Repetições</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.repeticoes}" />                    
+		                                </p:column>  
+		                                 <p:column>
+		                                    <f:facet name="header">Carga</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.carga}" />                    
+		                                </p:column>
+		                                 <p:column>
+		                                    <f:facet name="header">Intervalo</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.intervalo}" />                    
+		                                </p:column>  		                                    		                                  		                                                                                               
+		                            </p:dataTable>  
+                                </p:tab>   
+                                <p:tab id="tab2" title="Terça">
+		                             <p:dataTable id="tabelaTerca" style="width:550px;" value="#{treinoBean.arrayTerca}"
+		                                         var="exercicioPorUsuario" paginatorAlwaysVisible="false"
+		                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+		  										 rows="20">
+		                                 <p:column>
+		                                    <f:facet name="header">Nome</f:facet>   
+		                                    <p:commandLink oncomplete="PF('exercicioDialog').show()"
+		                                                   value="#{exercicioPorUsuario.nome}" immediate="true"
+		                                                   update=":formLocalDialogExercicio:panelLocalDialogExercicio"                              
+		                                                   actionListener="#{treinoBean.atualizarExercicioPorId(exercicioPorUsuario)}" process="@this">
+                              							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>		                                </p:column> 
+		                                 <p:column>
+		                                    <f:facet name="header">Séries</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.series}" />                    
+		                                </p:column>    
+		                                 <p:column>
+		                                    <f:facet name="header">Repetições</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.repeticoes}" />                    
+		                                </p:column>  
+		                                 <p:column>
+		                                    <f:facet name="header">Carga</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.carga}" />                    
+		                                </p:column>
+		                                 <p:column>
+		                                    <f:facet name="header">Intervalo</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.intervalo}" />                    
+		                                </p:column>  		                                    		                                  		                                                                                               
+		                            </p:dataTable>                                     
+                                </p:tab>
+                                <p:tab id="tab3" title="Quarta">
+		                             <p:dataTable id="tabelaQuarta" style="width:550px;" value="#{treinoBean.arrayQuarta}"
+		                                         var="exercicioPorUsuario" paginatorAlwaysVisible="false"
+		                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+		  										 rows="20">
+		                                 <p:column>
+		                                    <f:facet name="header">Nome</f:facet>   
+		                                    <p:commandLink oncomplete="PF('exercicioDialog').show()"
+		                                                   value="#{exercicioPorUsuario.nome}" immediate="true"
+		                                                   update=":formLocalDialogExercicio:panelLocalDialogExercicio"                              
+		                                                   actionListener="#{treinoBean.atualizarExercicioPorId(exercicioPorUsuario)}" process="@this">
+                              							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>		                                </p:column> 
+		                                 <p:column>
+		                                    <f:facet name="header">Séries</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.series}" />                    
+		                                </p:column>    
+		                                 <p:column>
+		                                    <f:facet name="header">Repetições</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.repeticoes}" />                    
+		                                </p:column>  
+		                                 <p:column>
+		                                    <f:facet name="header">Carga</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.carga}" />                    
+		                                </p:column>
+		                                 <p:column>
+		                                    <f:facet name="header">Intervalo</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.intervalo}" />                    
+		                                </p:column>  		                                    		                                  		                                                                                               
+		                            </p:dataTable>                                    
+                                </p:tab> 
+                                <p:tab id="tab4" title="Quinta">                        
+		                             <p:dataTable id="tabelaQuinta" style="width:550px;" value="#{treinoBean.arrayQuinta}"
+		                                         var="exercicioPorUsuario" paginatorAlwaysVisible="false"
+		                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+		  										 rows="20">
+		                                 <p:column>
+		                                    <f:facet name="header">Nome</f:facet>   
+		                                    <p:commandLink oncomplete="PF('exercicioDialog').show()"
+		                                                   value="#{exercicioPorUsuario.nome}" immediate="true"
+		                                                   update=":formLocalDialogExercicio:panelLocalDialogExercicio"                              
+		                                                   actionListener="#{treinoBean.atualizarExercicioPorId(exercicioPorUsuario)}" process="@this">
+                              							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>		                                </p:column> 
+		                                 <p:column>
+		                                    <f:facet name="header">Séries</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.series}" />                    
+		                                </p:column>    
+		                                 <p:column>
+		                                    <f:facet name="header">Repetições</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.repeticoes}" />                    
+		                                </p:column>  
+		                                 <p:column>
+		                                    <f:facet name="header">Carga</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.carga}" />                    
+		                                </p:column>
+		                                 <p:column>
+		                                    <f:facet name="header">Intervalo</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.intervalo}" />                    
+		                                </p:column>  		                                    		                                  		                                                                                               
+		                            </p:dataTable> 
+                                </p:tab>   
+                                <p:tab id="tab5" title="Sexta">
+ 		                             <p:dataTable id="tabelaSexta" style="width:550px;" value="#{treinoBean.arraySexta}"
+		                                         var="exercicioPorUsuario" paginatorAlwaysVisible="false"
+		                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+		  										 rows="20">
+		                                 <p:column>
+		                                    <f:facet name="header">Nome</f:facet>   
+		                                    <p:commandLink oncomplete="PF('exercicioDialog').show()"
+		                                                   value="#{exercicioPorUsuario.nome}" immediate="true"
+		                                                   update=":formLocalDialogExercicio:panelLocalDialogExercicio"                              
+		                                                   actionListener="#{treinoBean.atualizarExercicioPorId(exercicioPorUsuario)}" process="@this">
+                              							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>		                                </p:column> 
+		                                 <p:column>
+		                                    <f:facet name="header">Séries</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.series}" />                    
+		                                </p:column>    
+		                                 <p:column>
+		                                    <f:facet name="header">Repetições</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.repeticoes}" />                    
+		                                </p:column>  
+		                                 <p:column>
+		                                    <f:facet name="header">Carga</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.carga}" />                    
+		                                </p:column>
+		                                 <p:column>
+		                                    <f:facet name="header">Intervalo</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.intervalo}" />                    
+		                                </p:column>  		                                    		                                  		                                                                                               
+		                            </p:dataTable>                                    
+                                </p:tab>
+                                <p:tab id="tab6" title="Sábado">
+		                             <p:dataTable id="tabelaSabado" style="width:550px;" value="#{treinoBean.arraySabado}"
+		                                         var="exercicioPorUsuario" paginatorAlwaysVisible="false"
+		                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+		  										 rows="20">
+		                                 <p:column>
+		                                    <f:facet name="header">Nome</f:facet>   
+		                                    <p:commandLink oncomplete="PF('exercicioDialog').show()"
+		                                                   value="#{exercicioPorUsuario.nome}" immediate="true"
+		                                                   update=":formLocalDialogExercicio:panelLocalDialogExercicio"                              
+		                                                   actionListener="#{treinoBean.atualizarExercicioPorId(exercicioPorUsuario)}" process="@this">
+                              							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>	                                </p:column> 
+		                                 <p:column>
+		                                    <f:facet name="header">Séries</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.series}" />                    
+		                                </p:column>    
+		                                 <p:column>
+		                                    <f:facet name="header">Repetições</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.repeticoes}" />                    
+		                                </p:column>  
+		                                 <p:column>
+		                                    <f:facet name="header">Carga</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.carga}" />                    
+		                                </p:column>
+		                                 <p:column>
+		                                    <f:facet name="header">Intervalo</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.intervalo}" />                    
+		                                </p:column>  		                                    		                                  		                                                                                               
+		                            </p:dataTable>                                    
+                                </p:tab> 
+                                <p:tab id="tab7" title="Domingo">
+		                             <p:dataTable id="tabelaDomingo" style="width:550px;" value="#{treinoBean.arrayDomingo}"
+		                                         var="exercicioPorUsuario" paginatorAlwaysVisible="false"
+		                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+		  										 rows="20">
+		                                 <p:column>
+		                                    <f:facet name="header">Nome</f:facet>   
+		                                    <p:commandLink oncomplete="PF('exercicioDialog').show()"
+		                                                   value="#{exercicioPorUsuario.nome}" immediate="true"
+		                                                   update=":formLocalDialogExercicio:panelLocalDialogExercicio"                              
+		                                                   actionListener="#{treinoBean.atualizarExercicioPorId(exercicioPorUsuario)}" process="@this">
+                              							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>		                     
+		                                </p:column> 
+		                                 <p:column>
+		                                    <f:facet name="header">Séries</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.series}" />                    
+		                                </p:column>    
+		                                 <p:column>
+		                                    <f:facet name="header">Repetições</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.repeticoes}" />                    
+		                                </p:column>  
+		                                 <p:column>
+		                                    <f:facet name="header">Carga</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.carga}" />                    
+		                                </p:column>
+		                                 <p:column>
+		                                    <f:facet name="header">Intervalo</f:facet>  
+		                                    <p:outputLabel value="#{exercicioPorUsuario.intervalo}" />                    
+		                                </p:column>  		                                    		                                  		                                                                                               
+		                            </p:dataTable>                                    
+                                </p:tab>                                                                                                                                     
+                            </p:tabView>                                                                       	
+                            <hr />
+                            <p:commandButton id="addId" value="#{msgs.addExercicio}"
+                                             onclick="PF('exercicioDialog').show()"
+                                             update=":formLocalDialogExercicio:panelLocalDialogExercicio" icon="ui-icon-plusthick" styleClass="ui-priority-primary" />
+                            <p:commandButton id="saveId" value="#{msgs.salvar}"
+                                             actionListener="#{treinoBean.salvarOuAtualizar}"
+                                             icon="ui-icon-check" update=":panelTabela :formLocalDialog:panelLocalDialog" styleClass="ui-priority-primary" rendered="#{treinoBean.treino.data == null}"/>                                             
+                             <p:commandButton id="saveId2" value="#{msgs.salvar}"
+                                             actionListener="#{treinoBean.atualizarTreino}"
+                                             icon="ui-icon-check" update=":panelTabela :formLocalDialogTreino:panelLocalDialogTreino" styleClass="ui-priority-primary" rendered="#{treinoBean.treino.data != null}"/> 
+                            <p:commandButton value="#{msgs.remover}" rendered="#{treinoBean.treino.data != null}"
+                                             actionListener="#{treinoBean.remover}"
+                                             icon="ui-icon-trash" update=":panelTabela :formLocalDialog:panelLocalDialog" styleClass="ui-priority-primary" />                                             
+                            <p:commandButton value="#{msgs.cancelar}" immediate="true"
+                                             oncomplete="PF('usuarioTreinoDialog').hide()" icon="ui-icon-cancel" />
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>        
+                
+                <p:dialog widgetVar="exercicioDialog" modal="true" resizable="false">
+                    <f:facet name="header">Exercício</f:facet>
+                    <h:form id="formLocalDialogExercicio">
+                        <p:outputPanel id="panelLocalDialogExercicio">  
+                        <center>
+						<h:panelGrid columns="2">
+       						<p:outputLabel for="selectDia" value="Dia" />						
+					        <p:selectOneMenu id="selectDia" value="#{treinoBean.exercicioPorUsuario.dia}" style="width:125px">
+					            <f:selectItem itemLabel="Segunda-feira" itemValue="Segunda-feira" />
+					            <f:selectItem itemLabel="Terça-feira" itemValue="Terça-feira" />
+					            <f:selectItem itemLabel="Quarta-feira" itemValue="Quarta-feira" />
+					            <f:selectItem itemLabel="Quinta-feira" itemValue="Quinta-feira" />
+					            <f:selectItem itemLabel="Sexta-feira" itemValue="Sexta-feira" />
+					            <f:selectItem itemLabel="Sábado" itemValue="Sábado" />
+					            <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
+					        </p:selectOneMenu>						
+							<p:outputLabel for="inputNome" value="Nome" />
+							<p:inputText id="inputNome"
+										value="#{treinoBean.exercicioPorUsuario.nome}" required="true"
+										requiredMessage="#{erros.rg_obrigatorio}" />							
+							<p:outputLabel for="inputSeries"
+											value="Séries" />
+							<p:inputText id="inputSeries" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{treinoBean.exercicioPorUsuario.series}" />											
+							<p:outputLabel for="inputRepeticoes"
+											value="Repetições" />
+							<p:inputText id="inputRepeticoes" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{treinoBean.exercicioPorUsuario.repeticoes}" />											
+							<p:outputLabel for="inputIntervalo"
+											value="Intervalo" />
+							<p:inputText id="inputIntervalo" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{treinoBean.exercicioPorUsuario.intervalo}" />												
+							<p:outputLabel for="inputCarga"
+											value="Carga" />																																					
+							<p:inputText id="inputCarga" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{treinoBean.exercicioPorUsuario.carga}" />	
+							</h:panelGrid>                                            																															
+                        </center>        
+                            <hr />                                                                                                                   
+                            <p:commandButton value="#{msgs.adicionar}" rendered="#{treinoBean.exercicioPorUsuario.nome == null}"
+                                             actionListener="#{treinoBean.adicionarExercicioProv}"
+                                             icon="ui-icon-plusthick" update=":formLocalDialogTreino:panelLocalDialogTreino" styleClass="ui-priority-primary" />
+                            <p:commandButton id="saveId" value="#{msgs.salvar}"
+                                             actionListener="#{treinoBean.atualizarExercicio}"
+                                             icon="ui-icon-check" update=":formLocalDialogTreino:panelLocalDialogTreino" styleClass="ui-priority-primary" rendered="#{treinoBean.exercicioPorUsuario.nome != null}"/>                                                                           
+                            <p:commandButton value="#{msgs.remover}" rendered="#{treinoBean.exercicioPorUsuario.nome != null}"
+                                             actionListener="#{treinoBean.removerExercicio}" update=":formLocalDialogTreino:panelLocalDialogTreino"
+                                             icon="ui-icon-trash" styleClass="ui-priority-primary" />                                    
+                            <p:commandButton value="#{msgs.cancelar}" immediate="true" action="#{treinoBean.iniciarExercicios}"
+                                             oncomplete="PF('exercicioDialog').hide()" icon="ui-icon-cancel" />
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>   
+                                
+                                                
+               </ui:define>
+               </ui:composition>
+            
+    </h:body>
+</html>

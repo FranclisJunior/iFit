@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    
+    </h:head>
+    
+    <h:body>
+    <ui:composition template="/WEB-INF/interno.xhtml">
+            <ui:define name="header">
+                <p:outputLabel value="Gerenciar usuários" />
+            </ui:define>
+            <ui:define name="conteudo">
+				<p:panel styleClass="conteudo">
+                    <h:form id="formBusca">
+                        <h:panelGrid columns="3">
+                            <h:outputLabel for="busca" value="#{msgs.busca}" />
+                            <h:outputLabel value="Tipo do usuário" />
+                            <p:spacer />
+                            <p:inputText id="busca" maxlength="255" value="#{usuarioBean.busca}"
+                                         styleClass="width300" />
+                            <p:selectOneMenu value="#{usuarioBean.tipo}">
+                                <f:selectItem itemLabel="Aluno" itemValue="Aluno" />
+                                <f:selectItem itemLabel="Administrador" itemValue="Administrador" />
+                            </p:selectOneMenu>
+                            <p:commandButton id="botao" value="#{msgs.buscar}" styleClass="ui-priority-primary"
+                                             actionListener="#{usuarioBean.iniciar()}"
+                                             icon="ui-icon-search" update=":panelTabela" />
+                        </h:panelGrid>
+                        <p:separator />
+                    </h:form>
+                    <p:spacer />
+                   <p:outputPanel id="panelTabela">
+                        <center>
+                            <p:dataTable id="tabela" value="#{usuarioBean.usuarios}"
+                                         var="usuario" paginatorAlwaysVisible="false"
+                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+                                         rows="20">
+                                 <p:column>
+                                    <f:facet name="header">CPF</f:facet>
+                                    <p:outputLabel value="#{usuario.cpf}" />
+                                </p:column>                                       
+                                <p:column>
+                                    <f:facet name="header">E-mail</f:facet>
+                                    <p:outputLabel value="#{usuario.email}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">Tipo do usuário</f:facet>
+                                    <center>
+                                        <p:outputLabel value="#{usuario.tipo}" />
+                                    </center>
+                                </p:column>
+                                <p:column styleClass="width100">
+                                    <f:facet name="header">#{msgs.acoes}</f:facet>
+                                        <center>
+                                            <h:form id="formAcoes">  
+                                    			<p:commandLink actionListener="#{usuarioBean.remover(usuario)}" update=":panelTabela">
+                                                    <h:graphicImage library="imagens" name="delete.png" title="#{msgs.desativar}" rendered="#{usuarioBean.ativo}" />                              
+                                                </p:commandLink>   
+                                                
+                                                <p:commandLink oncomplete="PF('usuarioDialog').show()"
+                                                               update=":formLocalDialog:panelLocalDialog"
+                                                               actionListener="#{usuarioBean.atualizar(usuario.cpf)}" process="@this">
+                                                    <p:graphicImage library="imagens" name="pencil.png"
+                                                                    title="#{msgs.editar}"
+                                                                    style="border: none" />
+                                               <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                                               </p:commandLink>   
+                                                                                                                                                                                                                       
+                                            </h:form>
+                                        </center>
+                                </p:column>
+                            </p:dataTable>
+                        </center>
+                    </p:outputPanel>
+                </p:panel>
+                <p:dialog widgetVar="usuarioDialog" modal="true" resizable="false">
+                    <p:ajax event="close" listener="#{usuarioBean.iniciar}" />
+                    <f:facet name="header">Editar usuário</f:facet>
+                    <h:form id="formLocalDialog">
+                        <p:outputPanel id="panelLocalDialog">
+                            <p:tabView id="tabView">
+                                <p:tab id="tab1" title="Informações Básicas">                        
+                            <h:panelGrid columns="2">
+                                            <p:outputLabel for="inputNome" value="Nome" />
+                                            <p:inputText id="inputNome"
+                                                         value="#{usuarioBean.usuario.nome}"
+                                                         styleClass="width300" required="true"
+                                                         requiredMessage="#{erros.nome_obrigatorio}" />
+                                            <p:outputLabel for="inputNome" value="E-mail" />
+                                            <p:inputText id="inputEmail"
+                                                         value="#{usuarioBean.usuario.email}"
+                                                         styleClass="width300" required="true"
+                                                         requiredMessage="#{erros.nome_obrigatorio}" />    
+                                            <p:outputLabel for="inputSenha" value="Senha" />                                                                                                          
+					                        <p:password required="true" id="inputSenha" value="#{usuarioBean.usuario.senha}" styleClass="width300"
+					                                    redisplay="true" requiredMessage="Senha obrigatória" placeholder="Senha" />                                           
+          									<p:outputLabel for="selectTipo" value="Tipo de usuário" />
+                                            <p:selectOneRadio id="selectTipo" required="true" value="#{usuarioBean.usuario.tipo}">
+                                                <f:selectItem itemLabel="Administrador" itemValue="Administrador" />
+                                               	<f:selectItem itemLabel="Aluno" itemValue="Aluno" />
+                                            </p:selectOneRadio>
+                                        </h:panelGrid>
+                                        <h:panelGrid>                    
+                                            <p:outputLabel for="selectSexo" value="Sexo" />
+                                            <p:selectOneRadio id="selectSexo" required="true" value="#{usuarioBean.usuario.sexo}">
+                                                <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+                                               	<f:selectItem itemLabel="Feminino" itemValue="Feminino" />
+                                            </p:selectOneRadio>
+                                            <p:outputLabel for="selectEstadoCivil" value="Estado Civil" />
+                                            <p:selectOneRadio id="selectEstadoCivil" required="true"
+                                                              value="#{usuarioBean.usuario.estadoCivil}">
+                                                <f:selectItem itemLabel="Solteiro" itemValue="Solteiro" />
+                                                <f:selectItem itemLabel="Casado" itemValue="Casado" />
+                                                <f:selectItem itemLabel="Divorciado" itemValue="Divorciado" />        
+                                            </p:selectOneRadio>
+                                	</h:panelGrid>
+                                       <h:panelGrid columns="2">
+                                            <p:outputLabel for="inputDataNascimento"
+                                                           value="Data de nascimento" />
+                                            <p:calendar id="inputDataNascimento" navigator="true"
+                                                        mask="true" pattern="dd/MM/yyyy"
+                                                        value="#{usuarioBean.usuario.dataNascimento}"
+                                                        showOn="button" />
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2">
+                                            <p:outputLabel for="inputRg" value="RG" />
+                                            <p:outputLabel for="inputOrgaoEmissor"
+                                                           value="Orgão Emissor" />
+                                            <p:inputText id="inputRg"
+                                                         value="#{usuarioBean.usuario.rg}" required="true"
+                                                         requiredMessage="#{erros.rg_obrigatorio}" />
+                                            <p:inputText id="inputOrgaoEmissor" required="true"
+                                                         requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+                                                         value="#{usuarioBean.usuario.orgaoEmissor}" />
+                                        </h:panelGrid>
+                                </p:tab>   
+                                <p:tab id="tab2" title="Endereço">
+                                    <p:panel header="Endereço">
+                                        <p:outputPanel id="enderecoPanel">
+                                            <h:panelGrid>
+                                                <p:outputLabel for="inputCep" value="CEP" />
+                                                <p:inputMask id="inputCep" required="true"
+                                                             requiredMessage="#{erros.cep_obrigatorio}"
+                                                             value="#{usuarioBean.usuario.endereco.cep}"
+                                                             mask="99999-999">
+                                                </p:inputMask>
+                                            </h:panelGrid>
+                                            <h:panelGrid columns="2">
+                                                <p:outputLabel for="inputLogradouro"
+                                                               value="Logradouro" />
+                                                <p:outputLabel for="inputNumero" value="#{msgs.numero}" />
+                                                <p:inputText id="inputLogradouro" required="true"
+                                                             requiredMessage="#{erros.logradouro_obrigatorio}"
+                                                             value="#{usuarioBean.usuario.endereco.rua}"
+                                                             styleClass="width300" />
+                                                <p:inputText id="inputNumero"
+                                                             value="#{usuarioBean.usuario.endereco.numero}"
+                                                             styleClass="width100" />
+                                            </h:panelGrid>
+                                            <h:panelGrid columns="2">
+                                                <p:outputLabel for="inputComplemento"
+                                                               value="Complemento" />
+                                                <p:outputLabel for="inputBairro" value="#{msgs.bairro}" />
+                                                <p:inputText id="inputComplemento"
+                                                             value="#{usuarioBean.usuario.endereco.complemento}"
+                                                             styleClass="width200" />
+                                                <p:inputText id="inputBairro" required="true"
+                                                             requiredMessage="#{erros.bairro_obrigatorio}"
+                                                             value="#{usuarioBean.usuario.endereco.bairro}"
+                                                             styleClass="width200" />
+                                            </h:panelGrid>
+                                            <h:panelGrid columns="2">
+                                                <p:outputLabel value="Estado" />
+                                                <p:outputLabel value="Cidade" />
+                                                <p:inputText id="inputEstado"
+                                                             value="#{usuarioBean.usuario.endereco.estado}"
+                                                             styleClass="width200" />
+                                                <p:inputText id="inputCidade" required="true"
+                                                             requiredMessage="#{erros.bairro_obrigatorio}"
+                                                             value="#{usuarioBean.usuario.endereco.cidade}"
+                                                             styleClass="width200" />
+                                            </h:panelGrid>
+                                        </p:outputPanel>
+                                    </p:panel>
+                                </p:tab>
+                                <p:tab id="tab5" title="Financeiro">
+                                    <p:panel header="#{msgs.financeiro}">
+                                        <h:panelGrid columns="3">
+                                            <p:outputLabel value="Dia do pagamento" for="campoDia" />          
+                                            <p:inputText id="campoDia"
+                                                         value="#{usuarioBean.usuario.diaPagamento}" required="true"
+                                                         requiredMessage="#{erros.rg_obrigatorio}" />
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:tab>                                                                     
+                            </p:tabView>                                                                       	
+                            <hr />
+                            <p:commandButton id="saveId" value="#{msgs.salvar}" rendered="#{usuarioBean.usuario.cpf == null}"
+                                             actionListener="#{usuarioBean.salvarOuAtualizar}"
+                                             icon="ui-icon-check" update=":panelTabela :formLocalDialog:panelLocalDialog" styleClass="ui-priority-primary" />
+                            <p:commandButton value="#{msgs.editar}" rendered="#{usuarioBean.usuario.cpf != null}"
+                                             actionListener="#{usuarioBean.salvarOuAtualizar}"
+                                             icon="ui-icon-check" update=":panelTabela :formLocalDialog:panelLocalDialog" styleClass="ui-priority-primary" />
+                            <p:commandButton value="#{msgs.cancelar}" immediate="true"
+                                             oncomplete="PF('usuarioDialog').hide()" icon="ui-icon-cancel" />
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>                    
+               </ui:define>
+               </ui:composition>
+            
+    </h:body>
+</html>

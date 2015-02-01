@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+        <h:outputStylesheet library="css" name="estilo.css" />
+        <title>iFit</title>
+        <script>
+        function onAjaxError( error ) { console.log( error.description ); }
+        </script>
+    </h:head>
+    <h:body>
+        <header>
+            <nav>
+                <h:form id="menu">
+                    <p:menubar>
+                        <p:menuitem action="#{linkUtilBean.paginaIndex()}"
+                                    ajax="false" icon="ui-icon-home" styleClass="menuHome" />
+                        <p:submenu label="Usuários" icon="ui-icon-calculator">
+                            <p:menuitem value="Cadastrar usuário" action="#{linkUtilBean.paginaCadastroUsuario()}"
+                                        ajax="false" />
+                            <p:menuitem value="Buscar usuário" action="#{linkUtilBean.paginaListarUsuarios()}"
+                                        ajax="false" />
+                        </p:submenu>
+                        <p:menuitem value="Medidas" action="#{linkUtilBean.paginaMedidas()}"
+                                    ajax="false" icon="ui-icon-clipboard" />
+                        <p:menuitem value="Treinos" action="#{linkUtilBean.paginaTreinos()}"
+                                    ajax="false" icon="ui-icon-clipboard" />                                
+                        <p:submenu label="Financeiro" icon="ui-icon-calculator">
+                            <p:menuitem value="Abrir ou fechar caixa" action="#{linkUtilBean.paginaAbrirFecharCaixa()}"
+                                        ajax="false" />
+                            <p:menuitem value="Fluxo de caixa" action="#{linkUtilBean.paginaFluxoCaixa()}"
+                                        ajax="false" />
+                            <p:menuitem value="Gerenciar caixa" action="#{linkUtilBean.paginaGerenciarMensalidades()}"
+                                        ajax="false" />
+                            <p:menuitem value="Pagar mensalidades" action="#{linkUtilBean.paginaPagarMensalidades()}"
+                                        ajax="false" />
+                            <p:menuitem value="Verificar mensalidades atrasadas" action="#{linkUtilBean.paginaMensalidadesAtrasadas()}"
+                                        ajax="false" />
+                        </p:submenu>
+                        <f:facet name="options">
+                            <p:outputLabel value="#{request.remoteUser}" style="text-transform: uppercase; padding-right: 10px; color: white;" styleClass="font18" />
+                            <p:commandButton value="#{msgs.logout}" action="#{loginBean.logout()}" 
+                                             icon="ui-icon-extlink" ajax="false" />
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </nav>
+            <p:outputPanel id="panel" styleClass="header">
+                <ui:insert name="header" />
+            </p:outputPanel>
+            <h:graphicImage name="background.jpg" library="imagens" styleClass="banner" />
+        </header>
+        <p:spacer />
+        <section style="padding: 0% 1% 0% 1%;">
+            <p:ajaxStatus onstart="PF('statusDialog').show()"
+            onsuccess="PF('statusDialog').hide()"
+            onerror="onAjaxError" />
+            <p:growl id="messages" showDetail="false" autoUpdate="true" life="7000" />
+            <p:dialog modal="true" widgetVar="statusDialog" draggable="false"
+                      closable="false" id="ajaxStatusDialog" resizable="false">
+                <p:graphicImage library="imagens" name="ajaxloader.gif" />
+            </p:dialog>
+            <ui:insert name="conteudo" />
+        </section>
+        
+        
+    </h:body>
+</html>

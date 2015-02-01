@@ -1,14 +1,43 @@
 package br.com.ifit.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+
 public class Endereco {
+	@Id
+    @GeneratedValue
 	private int id;
+	@Column
 	private String rua;
+	@Column
 	private String numero;
+	@Column
 	private String bairro;
+	@Column
 	private String cidade;
+	@Column
 	private String estado;
+	@Column
+	private String complemento;
+	@Column
+	private String cep;
 	
-	
+	public String getComplemento() {
+		return complemento;
+	}
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+	public String getCep() {
+		return cep;
+	}
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
 	public String getRua() {
 		return rua;
 	}

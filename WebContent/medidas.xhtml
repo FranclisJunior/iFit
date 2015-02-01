@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    
+    </h:head>
+    
+    <h:body>
+    <ui:composition template="/WEB-INF/interno.xhtml">
+            <ui:define name="header">
+                <p:outputLabel value="Gerenciar medições" />
+            </ui:define>
+            <ui:define name="conteudo">
+				<p:panel styleClass="conteudo">
+                    <h:form id="formBusca">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel for="busca" value="#{msgs.busca}" />
+                            <p:spacer />
+                            <p:inputText id="busca" maxlength="255" value="#{usuarioBean.busca}"
+                                         styleClass="width300" />
+                            <p:commandButton id="botao" value="#{msgs.buscar}" styleClass="ui-priority-primary"
+                                             actionListener="#{usuarioBean.iniciar}"
+                                             icon="ui-icon-search" update=":panelTabela" />
+                        </h:panelGrid>
+                        <p:separator />
+                    </h:form>
+                    <p:spacer />
+                   <p:outputPanel id="panelTabela">
+                        <center>
+                            <p:dataTable id="tabela" value="#{usuarioBean.usuarios}"
+                                         var="usuario" paginatorAlwaysVisible="false"
+                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+  										 rows="20">
+                                 <p:column>
+                                    <f:facet name="header">Nome</f:facet>
+                                    <p:commandLink oncomplete="PF('treinosDialog').show()"
+                                                   update=":tabela :formLocalDialog:panelLocalDialog"
+                                                   value="#{usuario.nome}"                               
+                                                   actionListener="#{usuarioBean.atualizar(usuario.cpf)}" action="#{medicaoBean.setCpf(usuario.cpf)}" process="@this">
+                              				<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+									</p:commandLink>                                       
+                                </p:column>                                       
+                                <p:column>
+                                    <f:facet name="header">Medições</f:facet>
+                                    <p:outputLabel value="#{medicaoBean.contar(usuario)}" emptyMessage="Não há nenhum treino" />
+                                </p:column>
+                            </p:dataTable>
+                        </center>
+                    </p:outputPanel>
+                </p:panel>
+                <p:dialog widgetVar="treinosDialog" resizable="false">
+                    <p:ajax event="close" listener="#{medicaoBean.iniciar}" />
+                    <f:facet name="header">Medições do usuário</f:facet>
+                    <h:form id="formLocalDialog">
+                        <p:outputPanel id="panelLocalDialog">  
+                        <center>
+                             <p:dataTable id="tabela" style="width:550px;" value="#{medicaoBean.medicoes}"
+                                         var="medicao" paginatorAlwaysVisible="false"
+                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+  										 rows="20"> 
+                                 <p:column>
+                                    <f:facet name="header">Data</f:facet>  
+		                                    <p:commandLink oncomplete="PF('usuarioMedicaoDialog').show()"
+		                                                   value="#{medicao.data}" immediate="true"
+		                                                   update=":formLocalDialogMedicao:panelLocalDialogMedicao"                              
+		                                                   actionListener="#{medicaoBean.getPorId(medicao.id)}" process="@this">
+                              							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>                                </p:column>                                                                   
+                            </p:dataTable>  
+                            </center>        
+                            <hr />                  
+                            <p:commandButton value="#{msgs.adicionar}" rendered="#{medicaoBean.cpf != null}"
+                                             onclick="PF('usuarioMedicaoDialog').show()" actionListener="#{medicaoBean.iniciar}"
+                                             icon="ui-icon-plusthick" update=":panelTabela" styleClass="ui-priority-primary" />
+                            <p:commandButton value="#{msgs.cancelar}" immediate="true"
+                                             oncomplete="PF('treinosDialog').hide()" icon="ui-icon-cancel" />
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>   
+                  
+                <p:dialog widgetVar="usuarioMedicaoDialog" modal="true" resizable="false">
+                    <f:facet name="header">Medição</f:facet>
+                    <h:form id="formLocalDialogMedicao">
+                        <p:outputPanel id="panelLocalDialogMedicao">  
+                        <center>
+						<h:panelGrid columns="2">
+							<p:outputLabel for="inputAltura" value="Altura" />
+							<p:inputText id="inputAltura"
+										value="#{medicaoBean.medicao.altura}" required="true"
+										requiredMessage="#{erros.rg_obrigatorio}" />							
+							<p:outputLabel for="inputPeso"
+											value="Peso" />
+							<p:inputText id="inputPeso" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{medicaoBean.medicao.peso}" />	
+						</h:panelGrid>	
+						<hr />   
+						<h:panelGrid columns="4">
+							<p:outputLabel for="inputTorax" value="Torax" />
+							<p:inputText id="inputTorax"
+										value="#{medicaoBean.medicao.torax}" required="true"
+										requiredMessage="#{erros.rg_obrigatorio}" />							
+							<p:outputLabel for="inputCintura"
+											value="Cintura" />
+							<p:inputText id="inputCintura" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{medicaoBean.medicao.cintura}" />	
+							<p:outputLabel for="inputAbdomen" value="Abdomen" />
+							<p:inputText id="inputAbdomen"
+										value="#{medicaoBean.medicao.abdomen}" required="true"
+										requiredMessage="#{erros.rg_obrigatorio}" />							
+							<p:outputLabel for="inputQuadril"
+											value="Quadril" />
+							<p:inputText id="inputQuadril" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{medicaoBean.medicao.quadril}" />	
+							<p:outputLabel for="inputAnteBracoEsq" value="Antebraço esquerdo" />
+							<p:inputText id="inputAnteBracoEsq"
+										value="#{medicaoBean.medicao.anteBracoEsq}" required="true"
+										requiredMessage="#{erros.rg_obrigatorio}" />							
+							<p:outputLabel for="inputAnteBracoDir"
+											value="Antebraço direito" />
+							<p:inputText id="inputAnteBracoDir" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{medicaoBean.medicao.anteBracoDir}" />	
+							<p:outputLabel for="inputBicepsEsq" value="Biceps esquerdo" />
+							<p:inputText id="inputBicepsEsq"
+										value="#{medicaoBean.medicao.bicepsEsq}" required="true"
+										requiredMessage="#{erros.rg_obrigatorio}" />							
+							<p:outputLabel for="inputBicepsDir"
+											value="Biceps direito" />
+							<p:inputText id="inputBicepsDir" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{medicaoBean.medicao.bicepsDir}" />	
+							<p:outputLabel for="inputPanturrilhaEsq" value="Panturrilha esquerda" />
+							<p:inputText id="inputPanturrilhaEsq"
+										value="#{medicaoBean.medicao.panturrilhaEsq}" required="true"
+										requiredMessage="#{erros.rg_obrigatorio}" />							
+							<p:outputLabel for="inputPanturrilhaDir"
+											value="Panturrilha direita" />
+							<p:inputText id="inputPanturrilhaDir" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{medicaoBean.medicao.panturrilhaDir}" />	
+							<p:outputLabel for="inputCoxaEsq" value="Coxa esquerda" />
+							<p:inputText id="inputCoxaEsq"
+										value="#{medicaoBean.medicao.coxaEsq}" required="true"
+										requiredMessage="#{erros.rg_obrigatorio}" />							
+							<p:outputLabel for="inputCoxaDir"
+											value="Coxa direita" />
+							<p:inputText id="inputCoxaDir" required="true"
+										requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+										value="#{medicaoBean.medicao.coxaDir}" />	
+						</h:panelGrid>																					
+ 																															                        </center>        
+                            <hr />                                                                                                                   
+                            <p:commandButton value="#{msgs.adicionar}" 
+                                             actionListener="#{medicaoBean.adicionar}" rendered="#{medicaoBean.medicao.data == null}"
+                                             icon="ui-icon-plusthick" update=":formLocalDialog:panelLocalDialog :formLocalDialogMedicao:panelLocalDialogMedicao" styleClass="ui-priority-primary" />
+                            <p:commandButton id="saveId" value="#{msgs.salvar}"
+                                             actionListener="#{medicaoBean.atualizar}"
+                                             icon="ui-icon-check" update=":formLocalDialogMedicao:panelLocalDialogMedicao" styleClass="ui-priority-primary" rendered="#{medicaoBean.medicao.data != null}"/>                                                                           
+                            <p:commandButton value="#{msgs.remover}" rendered="#{medicaoBean.medicao.data != null}"
+                                             actionListener="#{medicaoBean.remover}" update=":formLocalDialog:panelLocalDialog :formLocalDialogMedicao:panelLocalDialogMedicao"
+                                             icon="ui-icon-trash" styleClass="ui-priority-primary" />                                    
+                            <p:commandButton value="#{msgs.cancelar}" immediate="true" action="#{treinoBean.iniciarExercicios}"
+                                             oncomplete="PF('usuarioMedicaoDialog').hide()" icon="ui-icon-cancel" />
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>   
+                                
+                                                
+               </ui:define>
+               </ui:composition>
+            
+    </h:body>
+</html>
