@@ -9,7 +9,6 @@ import br.com.ifit.exception.DAOException;
 import br.com.ifit.io.dao.IMedicaoDao;
 import br.com.ifit.io.dao.MedicaoDao;
 import br.com.ifit.model.Medicao;
-import br.com.ifit.model.Treino;
 import br.com.ifit.model.Usuario;
 
 public class MedicaoBusiness implements IMedicaoBusiness {
@@ -67,8 +66,6 @@ public class MedicaoBusiness implements IMedicaoBusiness {
 			medicaoDAO.update(medicao);
 		} catch (DAOException e) {
 			throw new BusinessException(e.getMessage());
-		}
-		
+		}		
 	}
-
 }

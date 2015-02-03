@@ -7,7 +7,6 @@ import org.hibernate.criterion.Restrictions;
 
 import br.com.ifit.exception.DAOException;
 import br.com.ifit.model.ExercicioPorUsuario;
-import br.com.ifit.model.Treino;
 
 public class ExercicioDao extends DaoGenericImpl<ExercicioPorUsuario> implements IExercicioDao {
 
@@ -45,6 +44,4 @@ public class ExercicioDao extends DaoGenericImpl<ExercicioPorUsuario> implements
         }
         return resultado;
     }
-	
-	
 }

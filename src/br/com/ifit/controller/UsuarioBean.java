@@ -16,91 +16,46 @@ import br.com.ifit.model.Usuario;
 @ManagedBean
 @ViewScoped
 public class UsuarioBean extends DefaultBean {
-	
-	private Usuario usuario;
-	
-	private String busca;
-	
-	private String tipo;
-	
-	private IUsuarioBusiness usuarioBusiness;
-	
-    private List<Usuario> usuarios = null;
-    
+		
+	private Usuario usuario;	
+	private String busca;	
+	private String tipo = "Aluno";	
+	private IUsuarioBusiness usuarioBusiness;	
+    private List<Usuario> usuarios = null;      
     private boolean ativo = true;
-	
-	public boolean getAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
-
-	public UsuarioBean () {
+        
+    public UsuarioBean () {
 		if (this.usuario == null) {
 			this.usuario = new Usuario();
 			this.usuario.setEndereco(new Endereco());
-		}
-		
+		}		
 		usuarioBusiness = new UsuarioBusiness();
+	} 
+        	
+	public boolean getAtivo() {
+		return ativo;
 	}
-	
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}	
 	public IUsuarioBusiness getUsuarioBusiness() {
 		return usuarioBusiness;
 	}
-
 	public void setUsuarioBusiness(IUsuarioBusiness usuarioBusiness) {
 		this.usuarioBusiness = usuarioBusiness;
-	}
-
-	public void iniciar() {
-		this.usuario = new Usuario();
-        this.usuarios = null;
-	}
-	
-	public void cadastrar(ActionEvent actionEvent) {
-		try {
-			usuarioBusiness.adicionar(usuario);
-			imprimirMensagem("Usuário adicionado com sucesso.");
-			iniciar();
-		} catch (BusinessException e) {
-			imprimirErro(e.getMessage());
-		}
-	}
-	
+	}	
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-	
+	}	
 	public Usuario getUsuario() {
 		return usuario;
-	}
-	
-    public void buscar() throws DAOException {
-        try {
-            if (usuarios == null) {
-                usuarios = usuarioBusiness.buscar(busca, tipo);
-
-            }
-        } catch (SecurityException e) {
-            imprimirErro(e.getMessage());
-        }
-    }
-
+	}	
 	public String getTipo() {
 		return tipo;
 	}
-
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-
-	public List<Usuario> getUsuarios() throws DAOException {
-		buscar();
-		return usuarios;
-	}
-
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
 	}
@@ -112,11 +67,42 @@ public class UsuarioBean extends DefaultBean {
 	public void setBusca(String busca) {
 		this.busca = busca;
 	}
+	
+	public List<Usuario> getUsuarios() throws DAOException {
+		buscar();
+		return usuarios;
+	}
+	
+    public void buscar() throws DAOException {
+        try {
+            if (usuarios == null) {
+                usuarios = usuarioBusiness.buscar(busca, tipo);
+            }
+        } catch (SecurityException e) {
+            imprimirErro(e.getMessage());
+        }
+    }
+
+	public void iniciar() {
+		this.usuario = new Usuario();
+        this.usuarios = null;
+	}
+	
+	public void cadastrar(ActionEvent actionEvent) {
+		try {
+			usuarioBusiness.adicionar(usuario);
+			imprimirMensagem("Usuario adicionado com sucesso.");
+			iniciar();
+		} catch (BusinessException e) {
+			imprimirErro(e.getMessage());
+		}
+	}
+	
     
     public void remover(Usuario usuario) {
     	try {
 			usuarioBusiness.remover(usuario);
-			imprimirMensagem("Usuário deletado com sucesso.");
+			imprimirMensagem("Usuario deletado com sucesso.");
 			iniciar();
 		} catch (BusinessException e) {
 			imprimirErro(e.getMessage());
@@ -126,7 +112,7 @@ public class UsuarioBean extends DefaultBean {
     public void salvarOuAtualizar() {
     	try {
 			usuarioBusiness.atualizar(usuario);
-			imprimirMensagem("Usuário atualizado com sucesso.");
+			imprimirMensagem("Usuario atualizado com sucesso.");
 			iniciar();	
 			fecharDialog("usuarioDialog");
 		} catch (BusinessException e) {

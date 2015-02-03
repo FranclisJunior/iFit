@@ -40,7 +40,7 @@
   										 rows="20">
                                  <p:column>
                                     <f:facet name="header">Nome</f:facet>
-                                    <p:commandLink oncomplete="PF('treinosDialog').show()"
+                                    <p:commandLink oncomplete="PF('medidasDialog').show()"
                                                    update=":tabela :formLocalDialog:panelLocalDialog"
                                                    value="#{usuario.nome}"                               
                                                    actionListener="#{usuarioBean.atualizar(usuario.cpf)}" action="#{medicaoBean.setCpf(usuario.cpf)}" process="@this">
@@ -55,7 +55,8 @@
                         </center>
                     </p:outputPanel>
                 </p:panel>
-                <p:dialog widgetVar="treinosDialog" resizable="false">
+                
+                <p:dialog widgetVar="medidasDialog" resizable="false">
                     <p:ajax event="close" listener="#{medicaoBean.iniciar}" />
                     <f:facet name="header">Medições do usuário</f:facet>
                     <h:form id="formLocalDialog">
@@ -72,15 +73,35 @@
 		                                                   update=":formLocalDialogMedicao:panelLocalDialogMedicao"                              
 		                                                   actionListener="#{medicaoBean.getPorId(medicao.id)}" process="@this">
                               							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
-											</p:commandLink>                                </p:column>                                                                   
+											</p:commandLink>                            
+							    </p:column>    
+							    <p:column styleClass="width100">
+                                    <f:facet name="header">#{msgs.acoes}</f:facet>
+		                       		<center>
+		                           		<h:form id="formAcoes">  
+			                   				<p:commandLink actionListener="#{medicaoBean.remover(medicao)}" update=":formLocalDialog:panelLocalDialog :formLocalDialogMedicao">			                   				
+			                                   <h:graphicImage library="imagens" name="delete.png" title="#{msgs.remover}" />                              
+			                               	</p:commandLink>   
+			                               	                               
+			                              	<p:commandLink oncomplete="PF('usuarioMedicaoDialog').show()"			                               	   
+			                                   update=":formLocalDialogMedicao:panelLocalDialogMedicao"                              
+			                                   actionListener="#{medicaoBean.getPorId(medicao.id)}" process="@this">
+			                                   <p:graphicImage library="imagens" name="pencil.png"  title="#{msgs.editar}"
+			                                                  style="border: none" />
+			                  				   <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>                                                                                                                                                                                                     
+		                           	 	</h:form>
+		                         	</center>
+                                </p:column>                                                               
                             </p:dataTable>  
                             </center>        
                             <hr />                  
                             <p:commandButton value="#{msgs.adicionar}" rendered="#{medicaoBean.cpf != null}"
-                                             onclick="PF('usuarioMedicaoDialog').show()" actionListener="#{medicaoBean.iniciar}"
-                                             icon="ui-icon-plusthick" update=":panelTabela" styleClass="ui-priority-primary" />
+                                             actionListener="#{medicaoBean.iniciar()}" onclick="PF('usuarioMedicaoDialog').show()"
+                                             icon="ui-icon-plusthick" update=":formLocalDialog:panelLocalDialog :formLocalDialogMedicao:panelLocalDialogMedicao"
+                                             styleClass="ui-priority-primary" />
                             <p:commandButton value="#{msgs.cancelar}" immediate="true"
-                                             oncomplete="PF('treinosDialog').hide()" icon="ui-icon-cancel" />
+                                             oncomplete="PF('medidasDialog').hide()" icon="ui-icon-cancel" />
                         </p:outputPanel>
                     </h:form>
                 </p:dialog>   

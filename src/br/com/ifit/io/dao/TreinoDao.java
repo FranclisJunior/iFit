@@ -51,6 +51,4 @@ public class TreinoDao extends DaoGenericImpl<Treino> implements ITreinoDao {
         return resultado;
     }
 	
-	
-	
 }

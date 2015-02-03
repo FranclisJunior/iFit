@@ -14,16 +14,22 @@ public class Medicao {
 	@Id
 	@GeneratedValue
 	private int id;
+	
 	@JoinColumn(name="USUARIO", referencedColumnName="cpf")
 	private String usuario;
+	
 	@Column
 	private Date data;
+	
 	@Column
 	private float altura;
+	
 	@Column
 	private float peso;
+	
 	@Column
 	private float torax;
+	
 	@Column
 	private float cintura;
 	@Column

@@ -5,12 +5,10 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
 
 import br.com.ifit.business.IMedicaoBusiness;
 import br.com.ifit.business.MedicaoBusiness;
 import br.com.ifit.exception.BusinessException;
-import br.com.ifit.exception.DAOException;
 import br.com.ifit.model.Medicao;
 import br.com.ifit.model.Usuario;
 
@@ -32,16 +30,13 @@ public class MedicaoBean extends DefaultBean {
 		this.cpf = cpf;
 		iniciar();
 	}
-
 	public List<Medicao> getMedicoes() {
 		buscar();
 		return medicoes;
-	}
-
+	}	
 	public void setMedicoes(List<Medicao> medicoes) {
 		this.medicoes = medicoes;
 	}
-
 	public Medicao getMedicao() {
 		return medicao;
 	}
@@ -112,6 +107,17 @@ public class MedicaoBean extends DefaultBean {
     }
     
     public void remover() {
+    	try {
+			medicaoBusiness.remover(medicao);
+			imprimirMensagem("Medição removida com sucesso.");
+			fecharDialog("usuarioMedicaoDialog");
+			iniciar();
+		} catch (BusinessException e) {
+			imprimirErro(e.getMessage());
+		}
+    }
+    
+    public void remover(Medicao medicao) {
     	try {
 			medicaoBusiness.remover(medicao);
 			imprimirMensagem("Medição removida com sucesso.");

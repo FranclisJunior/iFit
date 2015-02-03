@@ -1,5 +1,6 @@
 package br.com.ifit.business;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.ifit.exception.BusinessException;
@@ -8,7 +9,7 @@ import br.com.ifit.io.dao.ExercicioDao;
 import br.com.ifit.io.dao.IExercicioDao;
 import br.com.ifit.model.ExercicioPorUsuario;
 
-public class ExercicioBusiness implements IExercicioBusiness {
+public class ExercicioBusiness implements IExercicioBusiness, Serializable {
 	
 	IExercicioDao exercicioDAO;
 	

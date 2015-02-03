@@ -1,5 +1,6 @@
 package br.com.ifit.business;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -10,7 +11,7 @@ import br.com.ifit.io.dao.UsuarioDao;
 import br.com.ifit.io.dao.IUsuarioDao;
 import br.com.ifit.model.Usuario;
 
-public class UsuarioBusiness implements IUsuarioBusiness {
+public class UsuarioBusiness implements IUsuarioBusiness, Serializable {
 	
     private IUsuarioDao alunoDAO;
     
@@ -21,8 +22,8 @@ public class UsuarioBusiness implements IUsuarioBusiness {
 	public Usuario fazerLogin(String login, String senha) throws DAOException {
 	    try {
 	        Usuario aluno = alunoDAO.getPorLogin(login);
-	        if(aluno == null || aluno.getSenha().equalsIgnoreCase(senha) == false) {
-	            throw new DAOException("Login ou senha inválido");
+	        if(aluno == null || !aluno.getSenha().equals(senha)) {
+	            throw new DAOException("Login ou senha invalido");
 	        } else {
 	            return aluno;
 	        }

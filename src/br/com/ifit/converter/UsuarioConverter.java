@@ -7,7 +7,6 @@ import javax.faces.convert.FacesConverter;
 
 import br.com.ifit.business.IUsuarioBusiness;
 import br.com.ifit.business.UsuarioBusiness;
-import br.com.ifit.exception.BusinessException;
 import br.com.ifit.model.Usuario;
 
 @FacesConverter(forClass = Usuario.class)

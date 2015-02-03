@@ -35,7 +35,7 @@
                     </h:panelGrid>
                     <p:outputPanel id="panelBotao">
                         <p:commandButton value="Entrar" icon="ui-icon-locked" ajax="false"
-                                         styleClass="ui-priority-primary" action="#{loginBean.login}" update="panelBotao" />
+                                         styleClass="ui-priority-primary" action="#{loginBean.login()}" update="panelBotao" />
                     </p:outputPanel>
                 </h:form>
                 <p:spacer height="10" />

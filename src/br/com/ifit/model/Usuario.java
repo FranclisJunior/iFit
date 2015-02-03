@@ -1,5 +1,6 @@
 package br.com.ifit.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -7,39 +8,48 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
 
 @Entity
-
-public class Usuario {
+public class Usuario implements Serializable{
 	@Id
 	private String cpf;
+	
 	@Column
 	private String nome;
+	
 	@Column
 	private String sexo;
+	
 	@Column
 	private Date dataNascimento;
+	
 	@Column
 	private String telefone;
+	
 	@Column
 	private String email;
+	
 	@Column
 	private String senha;
+	
 	@Column
 	private String tipo;
+	
 	@Column
 	private String estadoCivil;
+	
 	@Column
 	private String rg;
+	
 	@Column
 	private String orgaoEmissor;
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
+	
 	@Column
 	private int diaPagamento;
+	
 
 	public int getDiaPagamento() {
 		return diaPagamento;

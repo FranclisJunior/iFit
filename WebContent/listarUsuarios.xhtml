@@ -42,8 +42,12 @@
                             <p:dataTable id="tabela" value="#{usuarioBean.usuarios}"
                                          var="usuario" paginatorAlwaysVisible="false"
                                          emptyMessage="#{erros.sem_registros}" paginator="true"
-                                         rows="20">
-                                 <p:column>
+                                         rows="20">                                
+                                <p:column>
+                                    <f:facet name="header">Nome</f:facet>
+                                    <p:outputLabel value="#{usuario.nome}" />
+                                </p:column>
+                                <p:column>
                                     <f:facet name="header">CPF</f:facet>
                                     <p:outputLabel value="#{usuario.cpf}" />
                                 </p:column>                                       
@@ -62,7 +66,7 @@
                                         <center>
                                             <h:form id="formAcoes">  
                                     			<p:commandLink actionListener="#{usuarioBean.remover(usuario)}" update=":panelTabela">
-                                                    <h:graphicImage library="imagens" name="delete.png" title="#{msgs.desativar}" rendered="#{usuarioBean.ativo}" />                              
+                                                    <h:graphicImage library="imagens" name="delete.png" title="#{msgs.remover}" rendered="#{usuarioBean.ativo}" />                              
                                                 </p:commandLink>   
                                                 
                                                 <p:commandLink oncomplete="PF('usuarioDialog').show()"

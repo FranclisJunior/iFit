@@ -26,7 +26,7 @@
                             <p:inputText id="busca" maxlength="255" value="#{usuarioBean.busca}"
                                          styleClass="width300" />
                             <p:commandButton id="botao" value="#{msgs.buscar}" styleClass="ui-priority-primary"
-                                             actionListener="#{usuarioBean.iniciar}"
+                                             actionListener="#{usuarioBean.iniciar()}"
                                              icon="ui-icon-search" update=":panelTabela" />
                         </h:panelGrid>
                         <p:separator />
@@ -84,7 +84,8 @@
                             <hr />                  
                             <p:commandButton value="#{msgs.adicionar}" rendered="#{usuarioBean.usuario.cpf != null}"
                                              onclick="PF('usuarioTreinoDialog').show()" actionListener="#{treinoBean.iniciar}"
-                                             icon="ui-icon-plusthick" update=":panelTabela :formLocalDialogTreino:panelLocalDialogTreino" styleClass="ui-priority-primary" />
+                                             icon="ui-icon-plusthick" update=":formLocalDialogTreino:panelLocalDialogTreino" 
+                                             styleClass="ui-priority-primary" />                                             
                             <p:commandButton value="#{msgs.cancelar}" immediate="true" action="#{treinoBean.iniciar}"
                                              oncomplete="PF('treinosDialog').hide()" icon="ui-icon-cancel" />
                         </p:outputPanel>
@@ -350,11 +351,11 @@
        						<p:outputLabel for="selectDia" value="Dia" />						
 					        <p:selectOneMenu id="selectDia" value="#{treinoBean.exercicioPorUsuario.dia}" style="width:125px">
 					            <f:selectItem itemLabel="Segunda-feira" itemValue="Segunda-feira" />
-					            <f:selectItem itemLabel="Terça-feira" itemValue="Terça-feira" />
+					            <f:selectItem itemLabel="Terça-feira" itemValue="Terca-feira" />
 					            <f:selectItem itemLabel="Quarta-feira" itemValue="Quarta-feira" />
 					            <f:selectItem itemLabel="Quinta-feira" itemValue="Quinta-feira" />
 					            <f:selectItem itemLabel="Sexta-feira" itemValue="Sexta-feira" />
-					            <f:selectItem itemLabel="Sábado" itemValue="Sábado" />
+					            <f:selectItem itemLabel="Sábado" itemValue="Sabado" />
 					            <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
 					        </p:selectOneMenu>						
 							<p:outputLabel for="inputNome" value="Nome" />

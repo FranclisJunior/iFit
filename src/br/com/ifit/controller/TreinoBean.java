@@ -6,18 +6,14 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
 
 import br.com.ifit.business.ExercicioBusiness;
 import br.com.ifit.business.IExercicioBusiness;
 import br.com.ifit.business.ITreinoBusiness;
 import br.com.ifit.business.TreinoBusiness;
-import br.com.ifit.business.UsuarioBusiness;
 import br.com.ifit.exception.BeanException;
 import br.com.ifit.exception.BusinessException;
 import br.com.ifit.exception.DAOException;
-import br.com.ifit.model.Endereco;
-import br.com.ifit.model.Exercicio;
 import br.com.ifit.model.ExercicioPorUsuario;
 import br.com.ifit.model.Treino;
 import br.com.ifit.model.Usuario;
@@ -25,7 +21,6 @@ import br.com.ifit.model.Usuario;
 
 @ManagedBean
 @ViewScoped
-
 public class TreinoBean extends DefaultBean {
 	
 	private Treino treino;
@@ -224,7 +219,7 @@ public class TreinoBean extends DefaultBean {
     		case "Segunda-feira":
     			arraySegunda.add(exercicioPorUsuario);
     			break;
-    		case "Terça-feira":
+    		case "Terca-feira":
     			arrayTerca.add(exercicioPorUsuario);
     			break;
     		case "Quarta-feira":
@@ -236,7 +231,7 @@ public class TreinoBean extends DefaultBean {
     		case "Sexta-feira":
     			arraySexta.add(exercicioPorUsuario);
     			break;
-    		case "Sábado":
+    		case "Sabado":
     			arraySabado.add(exercicioPorUsuario);
     			break;
     		case "Domingo":
@@ -286,7 +281,6 @@ public class TreinoBean extends DefaultBean {
     	try {
     		treino.setExercicios(null);
 			treinoBusiness.atualizar(treino);
-			System.out.println(exerciciosPorUsuario.size() + " SIZE USERS");
     		if (exerciciosPorUsuario != null) {
     			for (ExercicioPorUsuario exercicioPorUsuario : exerciciosPorUsuario) {
     				exercicioPorUsuario.setTreino(treino.getId());
@@ -355,13 +349,10 @@ public class TreinoBean extends DefaultBean {
     }
     
     public void atualizarExercicio() {
-    	System.out.println("ENTROU");
     	try {
     		for (int i = 0; i < exerciciosPorUsuario.size(); i++) {
-    			System.out.println("FORRR");
     			if (exerciciosPorUsuario.get(i).getNome().equals(getUltimoNomeExercicio())) {
     				exerciciosPorUsuario.set(i, exercicioPorUsuario);
-    				System.out.println("ACHOU E ATUALIZOU");
     			}
     		}
     		exerciciosDia();

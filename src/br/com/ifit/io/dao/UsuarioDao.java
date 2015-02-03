@@ -1,5 +1,6 @@
 package br.com.ifit.io.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -8,15 +9,14 @@ import org.hibernate.criterion.Restrictions;
 import br.com.ifit.exception.DAOException;
 import br.com.ifit.model.Usuario;
 
-public class UsuarioDao extends DaoGenericImpl<Usuario> implements IUsuarioDao {
+public class UsuarioDao extends DaoGenericImpl<Usuario> implements IUsuarioDao, Serializable {
 
-    @Override
-    public Usuario getPorLogin(String login) throws DAOException {
-    	System.out.println("chegou DAO");
+   
+    public Usuario getPorLogin(String login) throws DAOException {    	
         Criteria criteria = this.getCriteria();
         Usuario resultado = null;
         try {
-            criteria.add(Restrictions.eq("email", login).ignoreCase());
+            criteria.add(Restrictions.eq("cpf", login).ignoreCase());
             resultado = (Usuario) criteria.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -26,7 +26,6 @@ public class UsuarioDao extends DaoGenericImpl<Usuario> implements IUsuarioDao {
     }
     
     public boolean existeUsuarioPorCPF(String cpf) throws DAOException {
-    	System.out.println("chegou DAO");
         Criteria criteria = this.getCriteria();
         Usuario resultado = null;
         try {

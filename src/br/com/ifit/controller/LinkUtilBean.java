@@ -23,4 +23,12 @@ public class LinkUtilBean {
     	return "/medidas.jsf?faces-redirect=true";
     }
     
+    public String paginaIndex() {
+    	return "/index.jsf?faces-redirect=true";
+    }
+    
+    public String paginaLogin() {
+    	return "/login.jsf?faces-redirect=true";
+    }
+    
 }

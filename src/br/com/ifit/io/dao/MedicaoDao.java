@@ -6,9 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.ifit.exception.DAOException;
-import br.com.ifit.model.ExercicioPorUsuario;
 import br.com.ifit.model.Medicao;
-import br.com.ifit.model.Treino;
 import br.com.ifit.model.Usuario;
 
 public class MedicaoDao extends DaoGenericImpl<Medicao> implements IMedicaoDao {
@@ -51,5 +49,4 @@ public class MedicaoDao extends DaoGenericImpl<Medicao> implements IMedicaoDao {
         }
         return resultado;
     }
-
 }
