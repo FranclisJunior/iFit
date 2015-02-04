@@ -12,14 +12,13 @@ import br.com.ifit.exception.BusinessException;
 import br.com.ifit.model.Medicao;
 import br.com.ifit.model.Usuario;
 
-@ManagedBean
+@ManagedBean 
 @ViewScoped
-
 public class MedicaoBean extends DefaultBean {
 	
 	public IMedicaoBusiness medicaoBusiness;
 	private Medicao medicao;
-	List<Medicao> medicoes;
+	private List<Medicao> medicoes;
 	private String cpf;
 	
 	public String getCpf() {
@@ -49,7 +48,6 @@ public class MedicaoBean extends DefaultBean {
 	public void setMedicao(Medicao medicao) {
 		this.medicao = medicao;
 	}
-
 	public MedicaoBean() {
 		medicaoBusiness = new MedicaoBusiness();
 	}

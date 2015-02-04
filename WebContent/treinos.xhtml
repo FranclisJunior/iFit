@@ -13,7 +13,7 @@
     </h:head>
     
     <h:body>
-    <ui:composition template="/WEB-INF/interno.xhtml">
+    	<ui:composition template="/WEB-INF/interno.xhtml">
             <ui:define name="header">
                 <p:outputLabel value="Gerenciar treinos" />
             </ui:define>
@@ -98,8 +98,9 @@
                     <h:form id="formLocalDialogTreino">                    
                         <p:outputPanel id="panelLocalDialogTreino">
 							<h:panelGrid columns="2">
-   	    	       				<p:outputLabel value="Nome do treino" />
- 	                  			<p:inputText id="inputNomeTreino" value="#{treinoBean.treino.nome}" styleClass="width200" />   
+   	    	       				<p:outputLabel for="inputNomeTreino" value="Nome do treino" />
+ 	                  			<p:inputText id="inputNomeTreino" value="#{treinoBean.treino.nome}" styleClass="width200" 
+ 	                  						 required="true" requiredMessage="#{erros.nome_obrigatorio}" />   
    	    	       				<p:outputLabel value="Exercícios" /> 	                  			             
 							</h:panelGrid>
                             <p:tabView id="tabView">
@@ -117,7 +118,7 @@
                               							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
 											</p:commandLink>
 										</p:column> 
-		                                 <p:column>
+		                                <p:column>
 		                                    <f:facet name="header">Séries</f:facet>  
 		                                    <p:outputLabel value="#{exercicioPorUsuario.series}" />                    
 		                                </p:column>    
@@ -328,7 +329,7 @@
                                              onclick="PF('exercicioDialog').show()"
                                              update=":formLocalDialogExercicio:panelLocalDialogExercicio" icon="ui-icon-plusthick" styleClass="ui-priority-primary" />
                             <p:commandButton id="saveId" value="#{msgs.salvar}"
-                                             actionListener="#{treinoBean.salvarOuAtualizar}"
+                                             actionListener="#{treinoBean.salvar()}"
                                              icon="ui-icon-check" update=":panelTabela :formLocalDialog:panelLocalDialog" styleClass="ui-priority-primary" rendered="#{treinoBean.treino.data == null}"/>                                             
                              <p:commandButton id="saveId2" value="#{msgs.salvar}"
                                              actionListener="#{treinoBean.atualizarTreino}"
@@ -398,11 +399,10 @@
                                              oncomplete="PF('exercicioDialog').hide()" icon="ui-icon-cancel" />
                         </p:outputPanel>
                     </h:form>
-                </p:dialog>   
-                                
+                </p:dialog>        
                                                 
-               </ui:define>
-               </ui:composition>
-            
+        	</ui:define>
+               
+    	</ui:composition>            
     </h:body>
 </html>

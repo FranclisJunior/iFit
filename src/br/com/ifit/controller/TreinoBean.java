@@ -126,6 +126,8 @@ public class TreinoBean extends DefaultBean {
 	}
 	
 	public void iniciar() {
+		exerciciosPorUsuario = new ArrayList<ExercicioPorUsuario>();
+		exerciciosDia();
 		this.treino = new Treino();
 		this.exercicioPorUsuario = new ExercicioPorUsuario();
 		this.treinos = null;
@@ -136,7 +138,7 @@ public class TreinoBean extends DefaultBean {
 		this.treinos = null;
 	}
 	
-	public void salvarOuAtualizar() {
+	public void salvar() {
 		try {
 			treino.setUsuario(cpf);
 			treino.setData(new Date());
@@ -150,7 +152,7 @@ public class TreinoBean extends DefaultBean {
 				treinoBusiness.adicionar(treino);
 			}
 			imprimirMensagem("Treino adicionado com sucesso.");
-			iniciar();
+			iniciar();			
 			fecharDialog("usuarioTreinoDialog");
 		} catch (BusinessException e) {
 			imprimirErro(e.getMessage());
@@ -241,7 +243,6 @@ public class TreinoBean extends DefaultBean {
     }
     
     public void adicionarExercicioProv() {
-    	
     	try {
 	    	if (exerciciosPorUsuario == null) {
 	    		exerciciosPorUsuario = new ArrayList<ExercicioPorUsuario>();

@@ -8,7 +8,6 @@ import br.com.ifit.facade.UsuarioFacade;
 
 @ManagedBean
 @RequestScoped
-
 public class LoginBean extends DefaultBean{
 
     private String login;
@@ -29,7 +28,6 @@ public class LoginBean extends DefaultBean{
 //            dispatcher.forward((ServletRequest) extenalContext.getRequest(),
 //                    (ServletResponse) extenalContext.getResponse());
 //            facesContext.responseComplete();        
-
         } catch (Exception e) {
             imprimirErro(e.getMessage());
         }

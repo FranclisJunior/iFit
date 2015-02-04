@@ -5,13 +5,13 @@ import javax.faces.bean.RequestScoped;
 
 @ManagedBean
 @RequestScoped
-
 public class LinkUtilBean {
+	
     public String paginaListarUsuarios() {
         return "/listarUsuarios.jsf?faces-redirect=true";
     }
     
-    public String paginaCadastroUsuario() {
+    public String paginaCadastroUsuario() {    	
         return "/cadastrarUsuario.jsf?faces-redirect=true";
     }
     
