@@ -1,11 +1,13 @@
 package br.com.ifit.facade;
 
+import java.io.Serializable;
+
 import br.com.ifit.business.UsuarioBusiness;
 import br.com.ifit.business.IUsuarioBusiness;
 import br.com.ifit.exception.DAOException;
 import br.com.ifit.model.Usuario;
 
-public class UsuarioFacade implements IUsuarioFacade {
+public class UsuarioFacade implements IUsuarioFacade,Serializable {
 
     private IUsuarioBusiness alunoBusiness;
 

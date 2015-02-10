@@ -17,31 +17,22 @@
         <header>
             <nav>
                 <h:form id="menu">
-                    <p:menubar>
-                        <p:menuitem action="#{linkUtilBean.paginaIndex()}"
-                                    ajax="false" icon="ui-icon-home" styleClass="menuHome" />
-                        <p:submenu label="Usuários" icon="ui-icon-calculator">
-                            <p:menuitem value="Cadastrar usuário" action="#{linkUtilBean.paginaCadastroUsuario()}"
-                                        ajax="false" />
-                            <p:menuitem value="Buscar usuário" action="#{linkUtilBean.paginaListarUsuarios()}"
-                                        ajax="false" />
-                        </p:submenu>
-                        <p:menuitem value="Medidas" action="#{linkUtilBean.paginaMedidas()}"
+                    <p:menubar>                                                                
+                        <p:menuitem url="/homeAluno.jsf"
+                                    ajax="false" icon="ui-icon-home" styleClass="menuHome" />     
+                                                 
+                        <p:menuitem value="Medidas"                        				  
+                       				actionListener="#{medicaoBean.setCpf(loginBean.usuario.cpf)}"  
+                       				url="/medidasAluno.jsf"                			                       			            			
+                                    icon="ui-icon-clipboard">                              
+                        </p:menuitem>     
+    			                                                                                                        
+                        <p:menuitem value="Treinos" 
+                                    ajax="false" icon="ui-icon-clipboard" />    
+                                                             
+                      	<p:menuitem value="Financeiro" 
                                     ajax="false" icon="ui-icon-clipboard" />
-                        <p:menuitem value="Treinos" action="#{linkUtilBean.paginaTreinos()}"
-                                    ajax="false" icon="ui-icon-clipboard" />                                
-                        <p:submenu label="Financeiro" icon="ui-icon-calculator">
-                            <p:menuitem value="Abrir ou fechar caixa" action="#{linkUtilBean.paginaAbrirFecharCaixa()}"
-                                        ajax="false" />
-                            <p:menuitem value="Fluxo de caixa" action="#{linkUtilBean.paginaFluxoCaixa()}"
-                                        ajax="false" />
-                            <p:menuitem value="Gerenciar caixa" action="#{linkUtilBean.paginaGerenciarMensalidades()}"
-                                        ajax="false" />
-                            <p:menuitem value="Pagar mensalidades" action="#{linkUtilBean.paginaPagarMensalidades()}"
-                                        ajax="false" />
-                            <p:menuitem value="Verificar mensalidades atrasadas" action="#{linkUtilBean.paginaMensalidadesAtrasadas()}"
-                                        ajax="false" />
-                        </p:submenu>
+                                    
                         <f:facet name="options">
                             <p:outputLabel value="#{request.remoteUser}" style="text-transform: uppercase; padding-right: 10px; color: white;" styleClass="font18" />
                             <p:commandButton value="#{msgs.logout}" action="#{loginBean.logout()}"

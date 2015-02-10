@@ -1,5 +1,6 @@
 package br.com.ifit.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
 @Entity
-public class Medicao {
+public class Medicao implements Serializable {
 	
 	@Id
 	@GeneratedValue
@@ -32,24 +33,34 @@ public class Medicao {
 	
 	@Column
 	private float cintura;
+	
 	@Column
 	private float abdomen;
+	
 	@Column
 	private float quadril;
+	
 	@Column
 	private float anteBracoDir;
+	
 	@Column
 	private float anteBracoEsq;
+	
 	@Column
 	private float bicepsDir;
+	
 	@Column
 	private float bicepsEsq;
+	
 	@Column
 	private float panturrilhaDir;
+	
 	@Column
 	private float panturrilhaEsq;
+	
 	@Column
 	private float coxaDir;
+	
 	@Column
 	private float coxaEsq;
 	
@@ -155,8 +166,5 @@ public class Medicao {
 	}
 	public void setCoxaEsq(float coxaEsq) {
 		this.coxaEsq = coxaEsq;
-	}
-	
-	
-	
+	}	
 }

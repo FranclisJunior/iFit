@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
 import br.com.ifit.business.IMedicaoBusiness;
@@ -21,14 +22,20 @@ public class MedicaoBean extends DefaultBean {
 	private List<Medicao> medicoes;
 	private String cpf;
 	
+	public MedicaoBean() {
+		medicaoBusiness = new MedicaoBusiness();
+	}
+	
 	public String getCpf() {
 		return cpf;
 	}
 
 	public void setCpf(String cpf) {
+		System.out.println("cpf:" +cpf);
 		this.cpf = cpf;
 		iniciar();
 	}
+	
 	public List<Medicao> getMedicoes() {
 		buscar();
 		return medicoes;
@@ -47,13 +54,8 @@ public class MedicaoBean extends DefaultBean {
 
 	public void setMedicao(Medicao medicao) {
 		this.medicao = medicao;
-	}
-	public MedicaoBean() {
-		medicaoBusiness = new MedicaoBusiness();
-	}
-	
+	}	
 	public Integer contar(Usuario usuario) {
-		System.out.println("entrou no contar");
 		try {
 			return medicaoBusiness.contar(usuario);
 		} catch (BusinessException e) {
@@ -67,7 +69,7 @@ public class MedicaoBean extends DefaultBean {
 			medicao.setData(new Date());
 			medicao.setUsuario(cpf);
 			medicaoBusiness.adicionar(medicao);
-			imprimirMensagem("Medição adicionada com sucesso.");
+			imprimirMensagem("Medidas adicionada com sucesso.");
 			iniciar();
 			fecharDialog("usuarioMedicaoDialog");
 		} catch (BusinessException e) {
@@ -85,6 +87,18 @@ public class MedicaoBean extends DefaultBean {
         }
     }
     
+    public List<Medicao> buscar(String cpf) {
+        try {
+            if (medicoes == null) {
+             medicoes = medicaoBusiness.buscar(cpf);
+            }
+            return medicoes;
+        } catch (BusinessException e) {
+            imprimirErro(e.getMessage());
+            return null;
+        }
+    }
+    
     public void getPorId(int id) {
     	try {
 			medicao = medicaoBusiness.getPorId(id);
@@ -96,7 +110,7 @@ public class MedicaoBean extends DefaultBean {
     public void atualizar() {
     	try {
 			medicaoBusiness.atualizar(medicao);
-			imprimirMensagem("Medição atualizada com sucesso.");
+			imprimirMensagem("Medidas atualizada com sucesso.");
 			fecharDialog("usuarioMedicaoDialog");
 			iniciar();
 		} catch (BusinessException e) {
@@ -107,7 +121,7 @@ public class MedicaoBean extends DefaultBean {
     public void remover() {
     	try {
 			medicaoBusiness.remover(medicao);
-			imprimirMensagem("Medição removida com sucesso.");
+			imprimirMensagem("Medidas removida com sucesso.");
 			fecharDialog("usuarioMedicaoDialog");
 			iniciar();
 		} catch (BusinessException e) {
@@ -118,12 +132,11 @@ public class MedicaoBean extends DefaultBean {
     public void remover(Medicao medicao) {
     	try {
 			medicaoBusiness.remover(medicao);
-			imprimirMensagem("Medição removida com sucesso.");
+			imprimirMensagem("Medidas removida com sucesso.");
 			fecharDialog("usuarioMedicaoDialog");
 			iniciar();
 		} catch (BusinessException e) {
 			imprimirErro(e.getMessage());
 		}
-    }
-	
+    }   
 }

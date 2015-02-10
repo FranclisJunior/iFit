@@ -1,25 +1,38 @@
 package br.com.ifit.controller;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 import br.com.ifit.facade.IUsuarioFacade;
 import br.com.ifit.facade.UsuarioFacade;
+import br.com.ifit.model.Usuario;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class LoginBean extends DefaultBean{
-
+	
+	public static Usuario usuario;	
     private String login;
     private String senha;
-    private IUsuarioFacade alunoFacade = new UsuarioFacade();
+    private IUsuarioFacade usuarioFacade; 
+    private MedicaoBean medicao;
     
+    public LoginBean() {
+    	 usuarioFacade = new UsuarioFacade();
+    	 medicao = new MedicaoBean();
+	}
    
     
     public String login() {
         try {
-            alunoFacade.fazerLogin(login, senha);  
-            return "/index.jsf?faces-redirect=true";
+            usuario = usuarioFacade.fazerLogin(login, senha);
+            medicao.setCpf(usuario.getCpf());
+            System.out.println(usuario.getCpf());
+            if(usuario.getTipo().equals("Administrador"))
+            	return "/homeAdmin.jsf?faces-redirect=true";
+            
+            return "/homeAluno.jsf/face-redirect=true";
+          
 //            FacesContext facesContext = FacesContext.getCurrentInstance();
 //            ExternalContext extenalContext = facesContext.getExternalContext();
 //            RequestDispatcher dispatcher = ((ServletRequest) extenalContext
@@ -36,6 +49,7 @@ public class LoginBean extends DefaultBean{
     
     public String logout() {
         try {        	       
+        	usuario=null;
         	imprimirMensagem("Logout realizado");
         } catch (Exception e) {
             imprimirErro(e.getMessage());
@@ -58,5 +72,10 @@ public class LoginBean extends DefaultBean{
     public void setSenha(String senha) {
         this.senha = senha;
     }
+    
+    public Usuario getUsuario(){
+    	return usuario;
+    }
+    
     
 }

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />    
+    </h:head>
+    
+    <h:body>
+    <ui:composition template="/barAluno.xhtml">
+            <ui:define name="header">
+                <p:outputLabel value="Minhas medidas" />
+            </ui:define>
+            
+            <ui:define name="conteudo">
+	            <h:form id="formMedidas">           
+            		<p:tabView id="tabView">
+                        <p:tab id="tab1" title="Hitorico de Medidas">                                   								               	
+               				<p:outputPanel id="panelTabela">
+                    			
+                        			<p:dataTable id="tabela" value="#{medicaoBean.buscar(loginBean.usuario.cpf)}"
+                                     			 var="medicao" paginatorAlwaysVisible="false"
+                                                 emptyMessage="#{erros.sem_registros}" paginator="true"
+								  	             rows="20">
+                             			<p:column>
+                             				<center>
+                                			<f:facet name="header">Data da medição</f:facet>
+                                			<p:commandLink oncomplete="PF('usuarioMedicaoDialog').show()"
+	                                      		value="#{medicao.data}" immediate="true"
+	                                      		update=":formLocalDialogMedicao:panelLocalDialogMedicao"                              
+	                                      		actionListener="#{medicaoBean.getPorId(medicao.id)}" process="@this">
+	               								<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+											</p:commandLink>  
+											</center>                                   
+                            			</p:column> 				                                
+                        			</p:dataTable>
+                    			
+                			</p:outputPanel>				                 
+                        </p:tab>
+                         
+                        <p:tab id="tab2" title="Grafico de medidas">
+                        	<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">
+						       
+						        <p:outputLabel value="Selecione uma medida:" />						        
+						        <p:selectOneMenu id="medida" value="#{chartBean.lastPos}" effect="fold" >
+						            <f:selectItem itemLabel="Peso" itemValue="1" />
+						            <f:selectItem itemLabel="Torax" itemValue="2" />
+						            <f:selectItem itemLabel="Abdomen" itemValue="3" />
+						            <f:selectItem itemLabel="Cintura" itemValue="4"/>
+						            <f:selectItem itemLabel="Quadril" itemValue="5" />
+						            <f:selectItem itemLabel="Antebraços" itemValue="6" />
+						            <f:selectItem itemLabel="Biceps" itemValue="7" />
+						            <f:selectItem itemLabel="Panturrilhas" itemValue="8" />
+						            <f:selectItem itemLabel="Coxas" itemValue="9" />
+						            <p:ajax update=":formMedidas:tabView:grafico" />
+						        </p:selectOneMenu>
+						        
+				        	</h:panelGrid>  
+				                         	                           	
+                        	<p:separator/> 
+				                         	                               	
+	                		<p:panel id="grafico" >                                    	
+	                        	<p:chart type="line" model="#{chartBean.getModel()}" 
+	                               		 style="height:300px;" emptyMessage="Nenhuma medida localizada"/>  
+					    	</p:panel>
+						</p:tab>
+						                         
+               		</p:tabView>                    	         
+       			</h:form>
+                
+	        	<p:dialog widgetVar="usuarioMedicaoDialog" modal="true" resizable="false">
+	          		<f:facet name="header">Medição</f:facet>
+	              	<h:form id="formLocalDialogMedicao">
+	                  	<p:outputPanel id="panelLocalDialogMedicao">  
+	                  		<center>
+							<h:panelGrid columns="2">
+								<p:outputLabel for="inputAltura" value="Altura" />
+								<p:inputText id="inputAltura"
+											value="#{medicaoBean.medicao.altura}" required="true"
+											requiredMessage="#{erros.rg_obrigatorio}" 
+											readonly="true"/>							
+								<p:outputLabel for="inputPeso"
+												value="Peso" />
+								<p:inputText id="inputPeso" required="true"
+											requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+											value="#{medicaoBean.medicao.peso}"
+											readonly="true" />	
+							</h:panelGrid>	
+							<hr />   
+							<h:panelGrid columns="4">
+								<p:outputLabel for="inputTorax" value="Torax" />
+								<p:inputText id="inputTorax" 
+											value="#{medicaoBean.medicao.torax}" required="true"
+											requiredMessage="#{erros.rg_obrigatorio}" 
+											readonly="true"/>							
+								<p:outputLabel for="inputCintura" value="Cintura" />
+								<p:inputText id="inputCintura" required="true"
+											requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+											value="#{medicaoBean.medicao.cintura}" 
+											readonly="true"/>	
+								<p:outputLabel for="inputAbdomen" value="Abdomen" />
+								<p:inputText id="inputAbdomen"
+											value="#{medicaoBean.medicao.abdomen}" required="true"
+											requiredMessage="#{erros.rg_obrigatorio}" 
+											readonly="true"/>							
+								<p:outputLabel for="inputQuadril" value="Quadril" />
+								<p:inputText id="inputQuadril" required="true"
+											requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+											value="#{medicaoBean.medicao.quadril}" 
+											readonly="true"/>	
+								<p:outputLabel for="inputAnteBracoEsq" value="Antebraço esquerdo" />
+								<p:inputText id="inputAnteBracoEsq"
+											value="#{medicaoBean.medicao.anteBracoEsq}" required="true"
+											requiredMessage="#{erros.rg_obrigatorio}" 
+											readonly="true"/>							
+								<p:outputLabel for="inputAnteBracoDir" value="Antebraço direito" />
+								<p:inputText id="inputAnteBracoDir" required="true"
+											requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+											value="#{medicaoBean.medicao.anteBracoDir}"
+											readonly="true" />	
+								<p:outputLabel for="inputBicepsEsq" value="Biceps esquerdo" />
+								<p:inputText id="inputBicepsEsq"
+											value="#{medicaoBean.medicao.bicepsEsq}" required="true"
+											requiredMessage="#{erros.rg_obrigatorio}" 
+											readonly="true"/>							
+								<p:outputLabel for="inputBicepsDir"	value="Biceps direito" />
+								<p:inputText id="inputBicepsDir" required="true"
+											requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+											value="#{medicaoBean.medicao.bicepsDir}" 
+											readonly="true"/>	
+								<p:outputLabel for="inputPanturrilhaEsq" value="Panturrilha esquerda" />
+								<p:inputText id="inputPanturrilhaEsq"
+											value="#{medicaoBean.medicao.panturrilhaEsq}" required="true"
+											requiredMessage="#{erros.rg_obrigatorio}" 
+											readonly="true"/>							
+								<p:outputLabel for="inputPanturrilhaDir" value="Panturrilha direita" />
+								<p:inputText id="inputPanturrilhaDir" required="true"
+											requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+											value="#{medicaoBean.medicao.panturrilhaDir}" 
+											readonly="true"/>	
+								<p:outputLabel for="inputCoxaEsq" value="Coxa esquerda" />
+								<p:inputText id="inputCoxaEsq"
+											value="#{medicaoBean.medicao.coxaEsq}" required="true"
+											requiredMessage="#{erros.rg_obrigatorio}" 
+											readonly="true"/>							
+								<p:outputLabel for="inputCoxaDir" value="Coxa direita" />
+								<p:inputText id="inputCoxaDir" required="true"
+											requiredMessage="#{erros.orgao_emissor_obrigatorio}"
+											value="#{medicaoBean.medicao.coxaDir}" 
+											readonly="true"/>	
+							</h:panelGrid>																						                        </center>        
+	                      	<hr />                            
+	                      	<p:commandButton value="Fechar" immediate="true" action="#{medicaoBean.iniciar()}"
+	                                       oncomplete="PF('usuarioMedicaoDialog').hide()" icon="ui-icon-cancel" />
+	                	</p:outputPanel>
+	           		</h:form>                    
+	        	</p:dialog>                 
+            </ui:define>             
+    	</ui:composition>            
+    </h:body>
+</html>

@@ -6,8 +6,8 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class LinkUtilBean {
-	
-    public String paginaListarUsuarios() {
+		
+    public String paginaListarUsuarios() {    	
         return "/listarUsuarios.jsf?faces-redirect=true";
     }
     
@@ -21,10 +21,6 @@ public class LinkUtilBean {
     
     public String paginaMedidas() {
     	return "/medidas.jsf?faces-redirect=true";
-    }
-    
-    public String paginaIndex() {
-    	return "/index.jsf?faces-redirect=true";
     }
     
     public String paginaLogin() {

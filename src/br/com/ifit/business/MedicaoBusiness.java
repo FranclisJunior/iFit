@@ -1,5 +1,6 @@
 package br.com.ifit.business;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,7 +12,7 @@ import br.com.ifit.io.dao.MedicaoDao;
 import br.com.ifit.model.Medicao;
 import br.com.ifit.model.Usuario;
 
-public class MedicaoBusiness implements IMedicaoBusiness {
+public class MedicaoBusiness implements IMedicaoBusiness, Serializable {
 	
 	private IMedicaoDao medicaoDAO;
 	

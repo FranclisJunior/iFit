@@ -1,5 +1,6 @@
 package br.com.ifit.io.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -9,7 +10,7 @@ import br.com.ifit.exception.DAOException;
 import br.com.ifit.model.Medicao;
 import br.com.ifit.model.Usuario;
 
-public class MedicaoDao extends DaoGenericImpl<Medicao> implements IMedicaoDao {
+public class MedicaoDao extends DaoGenericImpl<Medicao> implements IMedicaoDao, Serializable {
 	
     public Integer contar(Usuario usuario) throws DAOException {
         Criteria criteria = this.getCriteria();
@@ -28,7 +29,8 @@ public class MedicaoDao extends DaoGenericImpl<Medicao> implements IMedicaoDao {
         Criteria criteria = this.getCriteria();
         List<Medicao> resultado = null;
         try {
-            criteria.add(Restrictions.like("usuario", "%" + cpf + "%").ignoreCase());
+        	System.out.println("cpf no dao: "+cpf);
+            criteria.add(Restrictions.eq("usuario", cpf));
             resultado = (List<Medicao>) criteria.list();
         } catch (Exception e) {
             e.printStackTrace();

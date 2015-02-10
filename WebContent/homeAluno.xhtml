@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    </h:head>
+    <h:body>
+        <ui:composition template="/barAluno.xhtml">
+            <ui:define name="conteudo">
+        <section style="height: 100%; padding-top: 2%; margin: 0 10% 30px 10%;">
+            <p:panel style="padding: 0px !important;">
+                <h:panelGrid columns="2">
+                    <h:panelGrid>
+                        <h2 style="font-size: 30px;">Seja bem-vindo ao <span style="font-size: 30px; color: silver;">iFit!</span></h2>
+                        <p:separator />
+                        <p class="lead">O iFit é um sistema para gerenciamento de academias desenvolvido por alunos da disciplina de Desenvolvimento de Sistemas Corporativos como projeto da disciplina.</p>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </p:panel>
+            <p:spacer />
+        </section>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
