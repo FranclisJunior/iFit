@@ -116,15 +116,16 @@
                                                              styleClass="width200" />
                                             </h:panelGrid>
                                             <h:panelGrid columns="2">
-                                                <p:outputLabel value="Estado" />
-                                                <p:outputLabel value="Cidade" />
-                                                <p:inputText id="inputEstado"
-                                                             value="#{usuarioBean.usuario.endereco.estado}"
-                                                             styleClass="width200" />
+                                            	<p:outputLabel value="Cidade" />
+                                                <p:outputLabel value="Estado" />                                                
                                                 <p:inputText id="inputCidade" required="true"
                                                              requiredMessage="#{erros.bairro_obrigatorio}"
                                                              value="#{usuarioBean.usuario.endereco.cidade}"
                                                              styleClass="width200" />
+                                                <p:inputText id="inputEstado"
+                                                             value="#{usuarioBean.usuario.endereco.estado}"
+                                                             styleClass="width200" />
+                                                
                                             </h:panelGrid>
                                         </p:outputPanel>
                                     </p:panel>

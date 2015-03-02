@@ -5,21 +5,21 @@ import java.util.List;
 
 import br.com.ifit.exception.BusinessException;
 import br.com.ifit.exception.DAOException;
-import br.com.ifit.io.dao.IPagamentoDao;
-import br.com.ifit.io.dao.PagamentoDao;
+import br.com.ifit.io.dao.IFinanceiroDao;
+import br.com.ifit.io.dao.FinanceiroDao;
 import br.com.ifit.model.Pagamento;
 
-public class PagamentoBusiness implements IPagamentoBusiness, Serializable{
+public class FinanceiroBusiness implements IFinanceiroBusiness, Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private IPagamentoDao pagamentoDao;
+	private IFinanceiroDao pagamentoDao;
 	
-	public PagamentoBusiness() {
-		pagamentoDao = new PagamentoDao();
+	public FinanceiroBusiness() {
+		pagamentoDao = new FinanceiroDao();
 	}
 
 	@Override

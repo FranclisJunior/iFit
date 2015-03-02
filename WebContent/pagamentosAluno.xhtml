@@ -21,7 +21,7 @@
 				<p:panel >                 
                    <p:outputPanel id="panelTabela">
                         <center>
-                        	<p:dataTable id="tabela" value="#{pagamentoBean.getMensalidades(loginBean.usuario.cpf)}"
+                        	<p:dataTable id="tabela" value="#{financeiroBean.getMensalidades(loginBean.usuario.cpf)}"
 	                                     var="pagamento" paginatorAlwaysVisible="false"
 	                                     emptyMessage="#{erros.sem_registros}" paginator="true"
 	                                     rows="12">                                

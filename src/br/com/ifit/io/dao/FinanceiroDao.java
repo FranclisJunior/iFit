@@ -11,7 +11,7 @@ import br.com.ifit.exception.DAOException;
 import br.com.ifit.model.Medicao;
 import br.com.ifit.model.Pagamento;
 
-public class PagamentoDao extends DaoGenericImpl<Pagamento> implements IPagamentoDao, Serializable {
+public class FinanceiroDao extends DaoGenericImpl<Pagamento> implements IFinanceiroDao, Serializable {
 
 	/**
 	 * 

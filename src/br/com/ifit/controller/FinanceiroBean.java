@@ -1,32 +1,38 @@
 package br.com.ifit.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import br.com.ifit.business.IPagamentoBusiness;
-import br.com.ifit.business.PagamentoBusiness;
+import br.com.ifit.business.IFinanceiroBusiness;
+import br.com.ifit.business.FinanceiroBusiness;
+import br.com.ifit.business.IUsuarioBusiness;
+import br.com.ifit.business.UsuarioBusiness;
 import br.com.ifit.exception.BusinessException;
 import br.com.ifit.model.Pagamento;
+import br.com.ifit.model.Usuario;
 
 @ManagedBean 
 @ViewScoped
-public class PagamentoBean extends DefaultBean {
+public class FinanceiroBean extends DefaultBean {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;	
-	private IPagamentoBusiness pagamentoBusinnes;
+	private IFinanceiroBusiness pagamentoBusinnes;
+	private IUsuarioBusiness usuarioBusiness;
 	private List<Pagamento> pagamentos;
 	private Pagamento pagamento;
 	
 	private final String [] arrayMeses = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
 	
-	public PagamentoBean() {
-		pagamentoBusinnes = new PagamentoBusiness();
+	public FinanceiroBean() {
+		pagamentoBusinnes = new FinanceiroBusiness();
+		usuarioBusiness = new UsuarioBusiness();
 	}
 	
 	public void gerarMensalidadesUsuario(String cpf){
@@ -39,7 +45,7 @@ public class PagamentoBean extends DefaultBean {
 				pagamento.setMes(arrayMeses[i]);
 				pagamento.setValor(0);
 				pagamento.setSituacao("Pendente");
-				if(i<mesCadastro){
+				if((i+1)<mesCadastro){
 					pagamento.setSituacao("Não Matriculado");
 				}				
 				pagamentoBusinnes.adicionar(pagamento);
@@ -77,6 +83,29 @@ public class PagamentoBean extends DefaultBean {
 			return null;
 		}
 	}
+	
+	
+	public List<Usuario> getAlunosInadiplentes(){
+		int mesAtual = new Date().getMonth();
+		try {
+			List<Usuario> lAlunos = usuarioBusiness.buscar("", "Aluno");
+			if(lAlunos==null) return null;			
+			
+			List<Usuario> alunosInadiplentes = new ArrayList<Usuario>();
+			for(Usuario aluno:lAlunos){
+				List<Pagamento> lPagamentos = pagamentoBusinnes.getPagamentos(aluno.getCpf());
+				if(lPagamentos==null) return null;
+				if(lPagamentos.get(mesAtual-1).getSituacao().equals("Pendente")){
+					alunosInadiplentes.add(aluno);
+				}
+			}		
+			return alunosInadiplentes;
+		} catch (BusinessException e) {
+			imprimirErro(e.getMessage());
+			return null;
+		}
+	}
+	
 	
 	public List<Pagamento> getPagamentos() {
 		return pagamentos;

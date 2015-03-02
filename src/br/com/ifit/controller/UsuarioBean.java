@@ -20,7 +20,7 @@ public class UsuarioBean extends DefaultBean {
 	private String busca;	
 	private String tipo = "Aluno";	
 	private IUsuarioBusiness usuarioBusiness;	
-	private PagamentoBean pagamentoBean;
+	private FinanceiroBean pagamentoBean;
     private List<Usuario> usuarios = null;      
     private boolean ativo = true;
         
@@ -30,7 +30,7 @@ public class UsuarioBean extends DefaultBean {
 			this.usuario.setEndereco(new Endereco());
 		}		
 		usuarioBusiness = new UsuarioBusiness();
-		pagamentoBean = new PagamentoBean();
+		pagamentoBean = new FinanceiroBean();
 	} 
         	
 	public boolean getAtivo() {

@@ -31,5 +31,8 @@ public class LinkUtilBean {
     	return "/pagamentos.jsf?faces-redirect=true";
     }
     
+    public String paginaMensalidadesAtrasadas(){
+    	return "/usuariosInadiplentes.jsf?faces-redirect=true";
+    }
     
 }
