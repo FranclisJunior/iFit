@@ -68,11 +68,13 @@ public class PagamentoBean extends DefaultBean {
 		pagamento=null;
 	}
 	
-	public void getMensalidades(String cpf){
+	public List<Pagamento> getMensalidades(String cpf){
 		try {
 			pagamentos = pagamentoBusinnes.getPagamentos(cpf);
+			return pagamentos;
 		} catch (BusinessException e) {
 			imprimirErro(e.getMessage());
+			return null;
 		}
 	}
 	

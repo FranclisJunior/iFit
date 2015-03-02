@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    
+    </h:head>
+    
+    <h:body>
+    <ui:composition template="/barAluno.xhtml">
+            <ui:define name="header">
+                <p:outputLabel value="Historico de Pagamentos" />
+            </ui:define>
+            <ui:define name="conteudo">
+				<p:panel >                 
+                   <p:outputPanel id="panelTabela">
+                        <center>
+                        	<p:dataTable id="tabela" value="#{pagamentoBean.getMensalidades(loginBean.usuario.cpf)}"
+	                                     var="pagamento" paginatorAlwaysVisible="false"
+	                                     emptyMessage="#{erros.sem_registros}" paginator="true"
+	                                     rows="12">                                
+	                            <p:column>
+	                                <f:facet name="header">Mes</f:facet>
+	                                <center>
+	                                <p:outputLabel value="#{pagamento.mes}" />
+	                                </center>
+	                            </p:column>
+	                            <p:column>
+	                                <f:facet name="header">Situação</f:facet>
+	                                <center>
+	                                <p:outputLabel value="#{pagamento.situacao}" />
+	                                </center>
+	                            </p:column>
+	                        </p:dataTable>                        
+                        </center>
+                    </p:outputPanel>
+                </p:panel>          
+                                    
+        	</ui:define>
+    	</ui:composition>
+            
+    </h:body>
+</html>

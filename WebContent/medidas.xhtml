@@ -73,12 +73,14 @@
   										 rows="20"> 
                                  <p:column>
                                     <f:facet name="header">Data</f:facet>  
-		                                    <p:commandLink oncomplete="PF('usuarioMedicaoDialog').show()"
-		                                                   value="#{medicao.data}" immediate="true"
-		                                                   update=":formLocalDialogMedicao:panelLocalDialogMedicao"                              
-		                                                   actionListener="#{medicaoBean.getPorId(medicao.id)}" process="@this">
-                              							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
-											</p:commandLink>                            
+                                   		<center>
+	                                    <p:commandLink oncomplete="PF('usuarioMedicaoDialog').show()"
+	                                                   value="#{medicao.data}" immediate="true"
+	                                                   update=":formLocalDialogMedicao:panelLocalDialogMedicao"                              
+	                                                   actionListener="#{medicaoBean.getPorId(medicao.id)}" process="@this">
+                             							  <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />		                                                   
+										</p:commandLink> 
+										</center>                           
 							    </p:column>    
 							    <p:column styleClass="width100">
                                     <f:facet name="header">#{msgs.acoes}</f:facet>

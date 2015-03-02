@@ -28,7 +28,7 @@ public class LinkUtilBean {
     }
     
     public String paginaPagarMensalidades(){
-    	return "/pagamentoUsuarios.jsf?faces-redirect=true";
+    	return "/pagamentos.jsf?faces-redirect=true";
     }
     
     

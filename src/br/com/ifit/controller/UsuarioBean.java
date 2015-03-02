@@ -4,11 +4,8 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
 
-import br.com.ifit.business.IPagamentoBusiness;
 import br.com.ifit.business.IUsuarioBusiness;
-import br.com.ifit.business.PagamentoBusiness;
 import br.com.ifit.business.UsuarioBusiness;
 import br.com.ifit.exception.BusinessException;
 import br.com.ifit.exception.DAOException;
@@ -77,12 +74,12 @@ public class UsuarioBean extends DefaultBean {
 		return usuarios;
 	}
 	
-    public void buscar() throws DAOException {
+    public void buscar(){
         try {
             if (usuarios == null) {
                 usuarios = usuarioBusiness.buscar(busca, tipo);
             }
-        } catch (SecurityException e) {
+        } catch (BusinessException e) {
             imprimirErro(e.getMessage());
         }
     }
@@ -92,7 +89,7 @@ public class UsuarioBean extends DefaultBean {
         this.usuarios = null;
 	}
 	
-	public void cadastrar(ActionEvent actionEvent) {
+	public void cadastrar() {
 		try {
 			usuarioBusiness.adicionar(usuario);
 			imprimirMensagem("Usuario adicionado com sucesso.");
@@ -124,11 +121,11 @@ public class UsuarioBean extends DefaultBean {
 		}
     }
     
-    public void atualizar(String cpf) {
+    public void atualizar(String cpf) throws DAOException {
     	try {
 			usuario = usuarioBusiness.getPorCpf(cpf);
-		} catch (DAOException e) {
-			imprimirMensagem(e.getMessage());
+		} catch (BusinessException e) {
+			imprimirErro(e.getMessage());
 		}
     }
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import br.com.ifit.business.UsuarioBusiness;
 import br.com.ifit.business.IUsuarioBusiness;
+import br.com.ifit.exception.BusinessException;
 import br.com.ifit.exception.DAOException;
 import br.com.ifit.model.Usuario;
 
@@ -16,7 +17,11 @@ public class UsuarioFacade implements IUsuarioFacade,Serializable {
 	}
 	
 	public Usuario fazerLogin(String login, String senha) throws DAOException {
-        return alunoBusiness.fazerLogin(login, senha);
+        try {
+			return alunoBusiness.fazerLogin(login, senha);
+		} catch (BusinessException e) {
+			throw new DAOException(e.getMessage());
+		}
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class UsuarioBusiness implements IUsuarioBusiness, Serializable {
     	alunoDAO = new UsuarioDao();
     }
 
-	public Usuario fazerLogin(String login, String senha) throws DAOException {
+	public Usuario fazerLogin(String login, String senha) throws BusinessException {
 	    try {
 	        Usuario aluno = alunoDAO.getPorLogin(login);
 	        if(aluno == null || !aluno.getSenha().equals(senha)) {
@@ -28,7 +28,7 @@ public class UsuarioBusiness implements IUsuarioBusiness, Serializable {
 	            return aluno;
 	        }
 	    } catch (DAOException ex) {
-	        throw new DAOException(ex.getMessage());
+	        throw new BusinessException(ex.getMessage());
 	    }
 	}
 		
@@ -36,12 +36,12 @@ public class UsuarioBusiness implements IUsuarioBusiness, Serializable {
 	public void adicionar(Usuario usuario) throws BusinessException {
 		try {
 			if (alunoDAO.existeUsuarioPorCPF(usuario.getCpf())) {
-				throw new BusinessException("CPF já cadastrado no sistema.");
+				throw new BusinessException("CPF ja cadastrado no sistema.");
 			} else {
 				alunoDAO.save(usuario);
 			}
 		} catch (DAOException e) {
-			e.printStackTrace();
+			throw new BusinessException(e.getMessage());
 		}
 	}
     
@@ -53,8 +53,12 @@ public class UsuarioBusiness implements IUsuarioBusiness, Serializable {
         }
     }
     
-    public Usuario getPorCpf(String cpf) throws DAOException {
-            return alunoDAO.getPorCpf(cpf);
+    public Usuario getPorCpf(String cpf) throws BusinessException {
+            try {
+				return alunoDAO.getPorCpf(cpf);
+			} catch (DAOException e) {
+				throw new BusinessException(e.getMessage());
+			}
     }
     
     public void remover(Usuario usuario) throws BusinessException {
@@ -65,9 +69,9 @@ public class UsuarioBusiness implements IUsuarioBusiness, Serializable {
 		}
     }
     
-    public void atualizar(Usuario usuario) throws BusinessException {
+    public Usuario atualizar(Usuario usuario) throws BusinessException {
     	try {
-			alunoDAO.update(usuario);
+			return alunoDAO.update(usuario);
 		} catch (DAOException e) {
 			throw new BusinessException(e.getMessage());
 		}
