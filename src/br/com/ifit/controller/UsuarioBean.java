@@ -6,7 +6,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
+import br.com.ifit.business.IPagamentoBusiness;
 import br.com.ifit.business.IUsuarioBusiness;
+import br.com.ifit.business.PagamentoBusiness;
 import br.com.ifit.business.UsuarioBusiness;
 import br.com.ifit.exception.BusinessException;
 import br.com.ifit.exception.DAOException;
@@ -21,6 +23,7 @@ public class UsuarioBean extends DefaultBean {
 	private String busca;	
 	private String tipo = "Aluno";	
 	private IUsuarioBusiness usuarioBusiness;	
+	private PagamentoBean pagamentoBean;
     private List<Usuario> usuarios = null;      
     private boolean ativo = true;
         
@@ -30,6 +33,7 @@ public class UsuarioBean extends DefaultBean {
 			this.usuario.setEndereco(new Endereco());
 		}		
 		usuarioBusiness = new UsuarioBusiness();
+		pagamentoBean = new PagamentoBean();
 	} 
         	
 	public boolean getAtivo() {
@@ -92,13 +96,13 @@ public class UsuarioBean extends DefaultBean {
 		try {
 			usuarioBusiness.adicionar(usuario);
 			imprimirMensagem("Usuario adicionado com sucesso.");
+			pagamentoBean.gerarMensalidadesUsuario(usuario.getCpf());
 			iniciar();
 		} catch (BusinessException e) {
 			imprimirErro(e.getMessage());
 		}
 	}
-	
-    
+	    
     public void remover(Usuario usuario) {
     	try {
 			usuarioBusiness.remover(usuario);
@@ -127,5 +131,4 @@ public class UsuarioBean extends DefaultBean {
 			imprimirMensagem(e.getMessage());
 		}
     }
-
 }

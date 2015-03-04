@@ -1,5 +1,7 @@
 package br.com.ifit.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
 @Entity
-public class ExercicioPorUsuario {
+public class ExercicioPorUsuario implements Serializable {
+	
 	@Id
 	@GeneratedValue
 	private int id;

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    
+    </h:head>
+    
+    <h:body>
+    <ui:composition template="/barAdministrador.xhtml">
+            <ui:define name="header">
+                <p:outputLabel value="Gerenciar Pagamentos" />
+            </ui:define>
+            <ui:define name="conteudo">
+				<p:panel >
+                    <h:form id="formBusca">
+                        <h:panelGrid columns="3">
+                            <h:outputLabel for="busca" value="#{msgs.busca}" />
+                            <p:inputText id="busca" maxlength="255" value="#{usuarioBean.busca}"/>
+                            <p:commandButton id="botao" value="#{msgs.buscar}" styleClass="ui-priority-primary"
+                                             actionListener="#{usuarioBean.iniciar()}"
+                                             icon="ui-icon-search" update=":panelTabela" />
+                        </h:panelGrid>
+                        <p:separator />
+                    </h:form>
+                    <p:spacer />
+                   <p:outputPanel id="panelTabela">
+                        <center>
+                            <p:dataTable id="tabela" value="#{usuarioBean.usuarios}"
+                                         var="usuario" paginatorAlwaysVisible="false"
+                                         emptyMessage="#{erros.sem_registros}" paginator="true"
+                                         rows="20">                                
+                                <p:column>
+                                    <f:facet name="header">Nome</f:facet>
+                                    <center>
+                                    <p:outputLabel value="#{usuario.nome}" />
+                                    </center>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">CPF</f:facet>
+                                    <center>
+                                    <p:outputLabel value="#{usuario.cpf}" />
+                                    </center>
+                                </p:column>                                       
+                                <p:column>
+                                    <f:facet name="header">E-mail</f:facet>
+                                    <center>
+                                    <p:outputLabel value="#{usuario.email}" />
+                                    </center>
+                                </p:column>
+                                
+                                <p:column styleClass="width100">
+                                   	<f:facet name="header">#{msgs.acoes}</f:facet>
+                                    <center>
+                                    <h:form id="formAcoes">                                                
+                                        <p:commandLink oncomplete="PF('mensalidadesDialog').show()"
+                                        			   actionListener="#{pagamentoBean.getMensalidades(usuario.getCpf())}"
+                                        			   update=":formLocalDialog:panelMensalidades">
+                                   			   <p:graphicImage library="imagens" name="pagar.png"                                        					
+                                   					process="@this"
+                                  	                style="border: none" />
+                                        	
+                                        	<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                                    	</p:commandLink>                                                                                                                                                                                                                      
+                                    </h:form>
+                                	</center>
+                                </p:column>
+                            </p:dataTable>
+                        </center>
+                    </p:outputPanel>
+                </p:panel>
+                
+                <p:dialog widgetVar="mensalidadesDialog"  modal="true" resizable="false" >
+                    <p:ajax event="close" listener="#{pagamentoBean.iniciar()}" />
+                    <f:facet name="header">Lista de Mensalidades</f:facet>
+                    <h:form id="formLocalDialog" styleClass="width400">
+                        <p:outputPanel id="panelMensalidades">
+                        	<center>
+	                        <p:dataTable id="tabela" value="#{pagamentoBean.pagamentos}"
+	                                     var="pagamento" paginatorAlwaysVisible="false"
+	                                     emptyMessage="#{erros.sem_registros}" paginator="true"
+	                                     rows="20">                                
+	                            <p:column>
+	                                <f:facet name="header">Mes</f:facet>
+	                                <center>
+	                                <p:outputLabel value="#{pagamento.mes}" />
+	                                </center>
+	                            </p:column>
+	                            <p:column>
+	                                <f:facet name="header">Situação</f:facet>
+	                                <center>
+	                                <p:outputLabel value="#{pagamento.situacao}" />
+	                                </center>
+	                            </p:column> 
+	                            
+	                            <p:column styleClass="width100">
+                                   	<f:facet name="header">#{msgs.acoes}</f:facet>
+                                    <center>                                             
+                                        <p:commandButton value="Pagar" rendered="#{pagamentoBean.isPendente(pagamento)}"
+                                        	 oncomplete="PF('pagamentoDialog').show()"
+                                        	 actionListener="#{pagamentoBean.setPagamento(pagamento)}"
+                                        	 update=":formPagamentoDialog:panelPagamento"
+                                             icon="ui-icon-plusthick" 
+                                             styleClass="ui-priority-primary" /> 
+                                	</center>
+                                </p:column>
+	                        </p:dataTable>
+	                        </center>    
+                        </p:outputPanel>                        
+                    </h:form>
+                </p:dialog>
+                
+                
+                <p:dialog widgetVar="pagamentoDialog" modal="true" resizable="false" >
+                    <p:ajax event="close" listener="#{usuarioBean.iniciar}" />
+                    <f:facet name="header">Pagamento de Mensalidades</f:facet>
+                    <h:form id="formPagamentoDialog" styleClass="width400">
+                        <p:outputPanel id="panelPagamento">
+                        	<center>
+                       		<h:panelGrid columns="1">                        		
+                        		 <p:outputLabel for="inputValorPagamento"
+                                                value="Valor"/>
+                                 <p:inputText id="inputValorPagamento"
+                                              value="#{pagamentoBean.pagamento.valor}" required="true"
+                                              requiredMessage="#{erros.rg_obrigatorio}" />           
+                                 
+                        	
+	                        	 <p:outputLabel for="inputDataPagamento"
+                                                value="Data de nascimento" />
+                                 <p:calendar id="inputDataPagamento" navigator="true"
+                                             mask="true" pattern="dd/MM/yyyy"
+                                             value="#{pagamentoBean.pagamento.dataPagamento}"
+                                             showOn="button" />	                       		
+	                       	</h:panelGrid>	
+	                       	</center>    
+	                        <hr />	                        
+	                        <h:panelGrid columns="2">	                        	
+	                        	<p:commandButton id="saveId" actionListener="#{pagamentoBean.pagarMensalidade()}" ajax="false"
+	                        				 update=":panelMensalidades"
+                                             value="Confirmar Pagamento" icon="ui-icon-check"
+                                             styleClass="ui-priority-primary" />                           
+	                        
+	                        	<p:commandButton value="#{msgs.cancelar}" immediate="true"
+                                             oncomplete="PF('pagamentoDialog').hide()" icon="ui-icon-cancel" />                                
+                          	</h:panelGrid>	                          	                      
+                        </p:outputPanel>                        
+                    </h:form>
+                </p:dialog>      
+                
+                                    
+        	</ui:define>
+    	</ui:composition>
+            
+    </h:body>
+</html>

@@ -29,7 +29,6 @@ public class MedicaoDao extends DaoGenericImpl<Medicao> implements IMedicaoDao, 
         Criteria criteria = this.getCriteria();
         List<Medicao> resultado = null;
         try {
-        	System.out.println("cpf no dao: "+cpf);
             criteria.add(Restrictions.eq("usuario", cpf));
             resultado = (List<Medicao>) criteria.list();
         } catch (Exception e) {

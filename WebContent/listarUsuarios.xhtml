@@ -18,14 +18,13 @@
                 <p:outputLabel value="Gerenciar usuários" />
             </ui:define>
             <ui:define name="conteudo">
-				<p:panel styleClass="conteudo">
+				<p:panel >
                     <h:form id="formBusca">
                         <h:panelGrid columns="3">
                             <h:outputLabel for="busca" value="#{msgs.busca}" />
                             <h:outputLabel value="Tipo do usuário" />
                             <p:spacer />
-                            <p:inputText id="busca" maxlength="255" value="#{usuarioBean.busca}"
-                                         styleClass="width300" />
+                            <p:inputText id="busca" maxlength="255" value="#{usuarioBean.busca}" />
                             <p:selectOneMenu value="#{usuarioBean.tipo}">
                                 <f:selectItem itemLabel="Aluno" itemValue="Aluno" />
                                 <f:selectItem itemLabel="Administrador" itemValue="Administrador" />
@@ -45,15 +44,21 @@
                                          rows="20">                                
                                 <p:column>
                                     <f:facet name="header">Nome</f:facet>
+                                    <center>
                                     <p:outputLabel value="#{usuario.nome}" />
+                                    </center>
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">CPF</f:facet>
+                                    <center>
                                     <p:outputLabel value="#{usuario.cpf}" />
+                                    </center>
                                 </p:column>                                       
                                 <p:column>
                                     <f:facet name="header">E-mail</f:facet>
+                                    <center>
                                     <p:outputLabel value="#{usuario.email}" />
+                                    </center>
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">Tipo do usuário</f:facet>
@@ -85,6 +90,7 @@
                         </center>
                     </p:outputPanel>
                 </p:panel>
+                
                 <p:dialog widgetVar="usuarioDialog" modal="true" resizable="false">
                     <p:ajax event="close" listener="#{usuarioBean.iniciar}" />
                     <f:facet name="header">Editar usuário</f:facet>
@@ -218,8 +224,8 @@
                         </p:outputPanel>
                     </h:form>
                 </p:dialog>                    
-               </ui:define>
-               </ui:composition>
+        	</ui:define>
+    	</ui:composition>
             
     </h:body>
 </html>

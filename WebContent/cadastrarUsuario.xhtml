@@ -149,7 +149,7 @@
                                                  process="@this" update=":cadastroUsuarioPanel"
                                                  value="#{msgs.limpar}" icon="ui-icon-document" immediate="true" />
                                 <p:commandButton
-                                    action="#{clienteBean.paginaListarClientes}" ajax="false"
+                                    action="#{linkUtilBean.paginaListarUsuarios()}" ajax="false"
                                     value="#{msgs.cancelar}" icon="ui-icon-cancel" immediate="true" />
                             </h:panelGrid>
                             <p:defaultCommand target="saveId"/>

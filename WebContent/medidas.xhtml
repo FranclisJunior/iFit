@@ -13,12 +13,14 @@
     </h:head>
     
     <h:body>
-    <ui:composition template="/barAdministrador.xhtml">
+       
+    	<ui:composition template="/barAdministrador.xhtml">
             <ui:define name="header">
                 <p:outputLabel value="Gerenciar medições" />
             </ui:define>
-            <ui:define name="conteudo">
-				<p:panel styleClass="conteudo">
+            
+            <ui:define name="conteudo">            	
+				<p:panel>
                     <h:form id="formBusca">
                         <h:panelGrid columns="2">
                             <h:outputLabel for="busca" value="#{msgs.busca}" />
@@ -31,29 +33,32 @@
                         </h:panelGrid>
                         <p:separator />
                     </h:form>
-                    <p:spacer />
+                   <p:spacer />                   
                    <p:outputPanel id="panelTabela">
-                        <center>
+                        
                             <p:dataTable id="tabela" value="#{usuarioBean.usuarios}"
                                          var="usuario" paginatorAlwaysVisible="false"
                                          emptyMessage="#{erros.sem_registros}" paginator="true"
   										 rows="20">
                                  <p:column>
+                                 	<center>
                                     <f:facet name="header">Nome</f:facet>
                                     <p:commandLink oncomplete="PF('medidasDialog').show()"
                                                    update=":tabela :formLocalDialog:panelLocalDialog"
                                                    value="#{usuario.nome}"                               
                                                    actionListener="#{usuarioBean.atualizar(usuario.cpf)}" action="#{medicaoBean.setCpf(usuario.cpf)}" process="@this">
                               				<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-									</p:commandLink>                                       
+									</p:commandLink>       
+									</center>                                
                                 </p:column>                                       
                                 <p:column>
+                                	<center>
                                     <f:facet name="header">Medições</f:facet>
                                     <p:outputLabel value="#{medicaoBean.contar(usuario)}" emptyMessage="Não há nenhum treino" />
+                                    </center>
                                 </p:column>
-                            </p:dataTable>
-                        </center>
-                    </p:outputPanel>
+                            </p:dataTable>                        
+                    </p:outputPanel>                    
                 </p:panel>
                 
                 <p:dialog widgetVar="medidasDialog" resizable="false">
@@ -195,7 +200,8 @@
                         </p:outputPanel>
                     </h:form>
                 </p:dialog>                                                
-        	</ui:define>
-    	</ui:composition>            
+        	</ui:define>        	
+    	</ui:composition>  
+    	       
     </h:body>
 </html>

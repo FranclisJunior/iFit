@@ -1,11 +1,15 @@
 package br.com.ifit.controller;
  
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
@@ -16,28 +20,33 @@ import br.com.ifit.exception.BusinessException;
 import br.com.ifit.model.Medicao;
  
 @ManagedBean
-public class ChartBean {
+@ViewScoped
+public class ChartBean implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int lastPos;
 	private IMedicaoBusiness medicaoB;
 	private List<Medicao> listMedicoes;
-	
-	
-    private LineChartModel model;
+	private String tipoGrafico = "line";	
     
+    private CartesianChartModel model;
     
     public ChartBean() {    	
-    	try {
-    		model = new LineChartModel();    	
+    	try {    		    	
         	medicaoB = new MedicaoBusiness();
         	if(LoginBean.usuario!=null)
 			listMedicoes = medicaoB.buscar(LoginBean.usuario.getCpf());
-        	lastPos= 1;
+        	lastPos= 1;        	
 		} catch (BusinessException e) {	}   	 
 	}
-      
-    
-    public LineChartModel getModel(){ 
+          
+    public CartesianChartModel getModel(){ 
+    	if(tipoGrafico.equals("bar")) model = new BarChartModel();
+    	else model = new LineChartModel();
+    	
     	ChartSeries m = new ChartSeries();
 		model.setTitle("Graficos de medidas");
 		model.setLegendPosition("e");
@@ -45,7 +54,7 @@ public class ChartBean {
 		model.getAxes().put(AxisType.X, new CategoryAxis("Data"));
 		Axis yAxis = model.getAxis(AxisType.Y);
 		yAxis.setMin(0);
-		yAxis.setMax(150);
+		yAxis.setMax(100);
     	
 		if(listMedicoes==null){
 			m.setLabel("Sem registro de medidas");
@@ -120,5 +129,15 @@ public class ChartBean {
 	
 	public void setLastPos(int lastPos) {
 		this.lastPos = lastPos;
+	}
+
+
+	public String getTipoGrafico() {
+		return tipoGrafico;
+	}
+
+
+	public void setTipoGrafico(String tipoGrafico) {
+		this.tipoGrafico = tipoGrafico;
 	}   
 }

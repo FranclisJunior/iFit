@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
 import br.com.ifit.business.IMedicaoBusiness;
@@ -16,6 +15,11 @@ import br.com.ifit.model.Usuario;
 @ManagedBean 
 @ViewScoped
 public class MedicaoBean extends DefaultBean {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	public IMedicaoBusiness medicaoBusiness;
 	private Medicao medicao;
@@ -31,7 +35,6 @@ public class MedicaoBean extends DefaultBean {
 	}
 
 	public void setCpf(String cpf) {
-		System.out.println("cpf:" +cpf);
 		this.cpf = cpf;
 		iniciar();
 	}

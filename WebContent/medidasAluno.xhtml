@@ -45,7 +45,7 @@
                         </p:tab>
                          
                         <p:tab id="tab2" title="Grafico de medidas">
-                        	<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">
+                        	<h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">
 						       
 						        <p:outputLabel value="Selecione uma medida:" />						        
 						        <p:selectOneMenu id="medida" value="#{chartBean.lastPos}" effect="fold" >
@@ -61,12 +61,19 @@
 						            <p:ajax update=":formMedidas:tabView:grafico" />
 						        </p:selectOneMenu>
 						        
+						        <p:outputLabel value="Selecione tipo de grafico:" />						        
+						        <p:selectOneMenu id="tipo" value="#{chartBean.tipoGrafico}" effect="fold" >
+						            <f:selectItem itemLabel="Linha" itemValue="line" />
+						            <f:selectItem itemLabel="Barra" itemValue="bar" />
+						            <p:ajax update=":formMedidas:tabView:grafico" />
+						        </p:selectOneMenu>
+						        
 				        	</h:panelGrid>  
 				                         	                           	
                         	<p:separator/> 
 				                         	                               	
 	                		<p:panel id="grafico" >                                    	
-	                        	<p:chart type="line" model="#{chartBean.getModel()}" 
+	                        	<p:chart type="#{chartBean.tipoGrafico}" model="#{chartBean.getModel()}" 
 	                               		 style="height:300px;" emptyMessage="Nenhuma medida localizada"/>  
 					    	</p:panel>
 						</p:tab>
@@ -88,7 +95,6 @@
 								<p:outputLabel for="inputPeso"
 												value="Peso" />
 								<p:inputText id="inputPeso" required="true"
-											requiredMessage="#{erros.orgao_emissor_obrigatorio}"
 											value="#{medicaoBean.medicao.peso}"
 											readonly="true" />	
 							</h:panelGrid>	

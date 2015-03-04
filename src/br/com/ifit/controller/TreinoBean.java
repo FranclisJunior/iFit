@@ -203,6 +203,15 @@ public class TreinoBean extends DefaultBean {
             imprimirErro(e.getMessage());
         }
     }
+    
+    public List<Treino> buscar(String cpf) {
+    	try {        
+             return treinoBusiness.buscar(cpf);             
+        } catch (BusinessException e) {
+            imprimirErro(e.getMessage());
+            return null;
+        }
+    }
 	
     public void exerciciosDia() {
 		arraySegunda = new ArrayList<ExercicioPorUsuario>();

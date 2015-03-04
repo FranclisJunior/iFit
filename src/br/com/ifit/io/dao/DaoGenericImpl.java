@@ -1,6 +1,6 @@
 package br.com.ifit.io.dao;
 
-// import br.com.sf.common.enums.Status;
+
 import br.com.ifit.exception.DAOException;
 
 import java.lang.reflect.ParameterizedType;

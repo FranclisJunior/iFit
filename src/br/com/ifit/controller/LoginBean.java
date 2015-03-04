@@ -14,24 +14,19 @@ public class LoginBean extends DefaultBean{
 	public static Usuario usuario;	
     private String login;
     private String senha;
-    private IUsuarioFacade usuarioFacade; 
-    private MedicaoBean medicao;
+    private IUsuarioFacade usuarioFacade;
     
     public LoginBean() {
-    	 usuarioFacade = new UsuarioFacade();
-    	 medicao = new MedicaoBean();
-	}
-   
+    	 usuarioFacade = new UsuarioFacade(); 
+	}   
     
     public String login() {
         try {
-            usuario = usuarioFacade.fazerLogin(login, senha);
-            medicao.setCpf(usuario.getCpf());
-            System.out.println(usuario.getCpf());
-            if(usuario.getTipo().equals("Administrador"))
-            	return "/homeAdmin.jsf?faces-redirect=true";
+            usuario = usuarioFacade.fazerLogin(login, senha);             
+            if(usuario.getTipo().equals("Aluno"))
+            	return "/homeAluno.jsf?faces-redirect=true";            	            	
             
-            return "/homeAluno.jsf/face-redirect=true";
+            return "/homeAdmin.jsf/face-redirect=true";
           
 //            FacesContext facesContext = FacesContext.getCurrentInstance();
 //            ExternalContext extenalContext = facesContext.getExternalContext();
@@ -76,6 +71,4 @@ public class LoginBean extends DefaultBean{
     public Usuario getUsuario(){
     	return usuario;
     }
-    
-    
 }

@@ -43,7 +43,6 @@ public class UsuarioDao extends DaoGenericImpl<Usuario> implements IUsuarioDao, 
     }
     
     public Usuario getPorCpf(String cpf) throws DAOException {
-    	System.out.println("chegou DAO");
         Criteria criteria = this.getCriteria();
         Usuario resultado = null;
         try {
@@ -68,8 +67,7 @@ public class UsuarioDao extends DaoGenericImpl<Usuario> implements IUsuarioDao, 
         } catch (Exception e) {
             e.printStackTrace();
             throw new DAOException(ExceptionsType.getMessage(ExceptionsType.READ_ERROR), e.getCause());
-        }
-        System.out.println("result" + resultado.size());
+        }        
         return resultado;
     }
    

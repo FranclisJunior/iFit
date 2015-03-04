@@ -3,7 +3,6 @@ package br.com.ifit.business;
 import java.util.List;
 
 import br.com.ifit.exception.BusinessException;
-import br.com.ifit.exception.DAOException;
 import br.com.ifit.model.ExercicioPorUsuario;
 
 public interface IExercicioBusiness {
